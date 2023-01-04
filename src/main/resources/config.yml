@@ -14,3 +14,4 @@ Settings:
   Troll other players with op: true
   Troll yourself: true
   Close inventory when troll entered: false
+  Send message when neu plugin version is out: true

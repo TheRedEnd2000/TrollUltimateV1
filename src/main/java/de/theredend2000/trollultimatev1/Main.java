@@ -1,17 +1,21 @@
 package de.theredend2000.trollultimatev1;
 
 import de.theredend2000.trollultimatev1.commands.TrollCommand;
-import de.theredend2000.trollultimatev1.listeners.ClickOptionsInTrollMenu;
-import de.theredend2000.trollultimatev1.listeners.ClickPlayerInTrollMenu;
-import de.theredend2000.trollultimatev1.listeners.ClickTrollItemsInventory;
-import de.theredend2000.trollultimatev1.listeners.TrollMenuFunktion;
+import de.theredend2000.trollultimatev1.listeners.*;
 import de.theredend2000.trollultimatev1.listeners.trollitems.ItemFunktions;
 import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public final class Main extends JavaPlugin {
 
@@ -24,13 +28,16 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Bukkit.getConsoleSender().sendMessage(PREFIX+"§7Troll Plugin started. Everyone §2READY§7?");
-
         saveDefaultConfig();
 
         initListeners();
         initCommands();
         initManagers();
+
+        if(!isOutdated()){
+            Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§6§lTrollUltimate is fully updated.");
+        }
+        Bukkit.getConsoleSender().sendMessage(PREFIX+"§aTroll Plugin started on version §6§l"+getDescription().getVersion());
     }
 
     public void initListeners(){
@@ -40,6 +47,7 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new TrollMenuFunktion(this),this);
         pluginManager.registerEvents(new ClickTrollItemsInventory(this),this);
         pluginManager.registerEvents(new ItemFunktions(this),this);
+        pluginManager.registerEvents(new UpdateListener(this),this);
     }
 
     public void initCommands(){
@@ -51,10 +59,29 @@ public final class Main extends JavaPlugin {
         trollMenuManager = new TrollMenuManager();
     }
 
+    public boolean isOutdated() {
+        try {
+            HttpURLConnection c = (HttpURLConnection)new URL("https://api.spigotmc.org/legacy/update.php?resource=107189").openConnection();
+            String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine();
+            c.disconnect();
+            String oldVersion = getDescription().getVersion();
+            if(!newVersion.equals(oldVersion)) {
+                Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§cYou do not have the most updated version of §c§lTrollUltimate§c.");
+                Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§cPlease chance the version: §4"+getDescription().getVersion()+"§6 --> §2§l"+newVersion);
+                return true;
+            }
+        }
+        catch(Exception e) {
+            Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§4§lERROR: §cCould not make connection to SpigotMC.org");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     @Override
     public void onDisable() {
-        Bukkit.getConsoleSender().sendMessage(PREFIX+"§7Troll Plugin offline.");
+        Bukkit.getConsoleSender().sendMessage(PREFIX+"§cTroll Plugin went offline.");
     }
 
     public OnlinePlayersMenu getOnlinePlayersMenu() {
