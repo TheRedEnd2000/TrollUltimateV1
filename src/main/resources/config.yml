@@ -1,0 +1,16 @@
+#Permissions
+Permissions:
+  Open Troll Menu: trollultimate.open
+
+
+#Messages
+Messages:
+  No Permission Message: "&cYou have no permission to use this command."
+  Can't troll yourself message: "&cYou can't troll yourself."
+  Can't troll players with op message: "&cYou can't troll players with op."
+
+#Settings
+Settings:
+  Troll other players with op: true
+  Troll yourself: true
+  Close inventory when troll entered: false

@@ -1,0 +1,13 @@
+name: TrollUltimateV1
+version: '${project.version}'
+main: de.theredend2000.trollultimatev1.Main
+api-version: 1.19
+commands:
+  trollultimate:
+    aliases:
+      - tu
+      - troll
+      - trollu
+      - tultimate
+      - trollulti
+    description: Open the troll menu
