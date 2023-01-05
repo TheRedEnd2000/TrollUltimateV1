@@ -6,12 +6,19 @@ import de.theredend2000.trollultimatev1.listeners.trollitems.ItemFunktions;
 import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -25,10 +32,14 @@ public final class Main extends JavaPlugin {
     private TrollMenuManager trollMenuManager;
     public Inventory onlinePlayerInventory = Bukkit.createInventory(null, 54, "Select a Player you want to Troll");
     public Inventory trollMenuInventory = Bukkit.createInventory(null,54,"Troll Menu");
+    public YamlConfiguration yaml;
+    public File data = new File("plugins/TrollUltimateV1", "database.yml");
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        this.yaml = YamlConfiguration.loadConfiguration(this.data);
+        this.saveData();
 
         initListeners();
         initCommands();
@@ -40,6 +51,15 @@ public final class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(PREFIX+"§aTroll Plugin started on version §6§l"+getDescription().getVersion());
     }
 
+    public void saveData() {
+        try {
+            this.yaml.save(this.data);
+        } catch (IOException var2) {
+            var2.printStackTrace();
+        }
+
+    }
+
     public void initListeners(){
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new ClickPlayerInTrollMenu(this),this);
@@ -48,6 +68,7 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new ClickTrollItemsInventory(this),this);
         pluginManager.registerEvents(new ItemFunktions(this),this);
         pluginManager.registerEvents(new UpdateListener(this),this);
+        pluginManager.registerEvents(new SavePlayerStats(this),this);
     }
 
     public void initCommands(){
@@ -56,7 +77,7 @@ public final class Main extends JavaPlugin {
 
     public void initManagers(){
         onlinePlayersMenu = new OnlinePlayersMenu();
-        trollMenuManager = new TrollMenuManager();
+        trollMenuManager = new TrollMenuManager(this);
     }
 
     public boolean isOutdated() {
@@ -67,7 +88,7 @@ public final class Main extends JavaPlugin {
             String oldVersion = getDescription().getVersion();
             if(!newVersion.equals(oldVersion)) {
                 Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§cYou do not have the most updated version of §c§lTrollUltimate§c.");
-                Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§cPlease chance the version: §4"+getDescription().getVersion()+"§6 --> §2§l"+newVersion);
+                Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§cPlease chance the version: §4"+oldVersion+"§6 --> §2§l"+newVersion);
                 return true;
             }
         }
@@ -99,4 +120,5 @@ public final class Main extends JavaPlugin {
     public Inventory getTrollMenuInventory() {
         return trollMenuInventory;
     }
+
 }

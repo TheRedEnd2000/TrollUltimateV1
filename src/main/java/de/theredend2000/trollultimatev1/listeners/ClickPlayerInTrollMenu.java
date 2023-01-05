@@ -20,10 +20,15 @@ public class ClickPlayerInTrollMenu implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
-        Player toTroll = player.getServer().getPlayerExact(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
         if(event.getView().getTitle().equals("Select a Player you want to Troll")){
             event.setCancelled(true);
             if(event.getCurrentItem() != null){
+                Player toTroll = player.getServer().getPlayerExact(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
+                if(toTroll == null){
+                    player.sendMessage(Main.PREFIX+"§cI can't find this player anymore.");
+                    player.closeInventory();
+                    return;
+                }
                 if(toTroll.equals(player)) {
                     boolean trollyourself = plugin.getConfig().getBoolean("Settings.Troll yourself");
                     if (!trollyourself) {

@@ -1,17 +1,20 @@
 package de.theredend2000.trollultimatev1.listeners;
 
 import de.theredend2000.trollultimatev1.Main;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -50,7 +53,7 @@ public class TrollMenuFunktion implements Listener {
                             }
                             break;
                         case "troll.explosion":
-                            toTroll.getWorld().createExplosion(player.getLocation(),3);
+                            toTroll.getWorld().createExplosion(toTroll.getLocation(),3);
                             player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 exploded.");
                             if(closequestion){
                                 player.closeInventory();
@@ -102,27 +105,37 @@ public class TrollMenuFunktion implements Listener {
                             }
                             break;
                         case "troll.freeze":
-                            if(freezedPlayers.contains(toTroll)){
-                                freezedPlayers.remove(toTroll);
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".Frozen")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".Frozen",false);
+                                plugin.saveData();
                                 player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 is no longer frozen.");
                             }else{
-                                freezedPlayers.add(toTroll);
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".Frozen",true);
+                                plugin.saveData();
                                 player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 is now frozen.");
                             }
                             if(closequestion){
                                 player.closeInventory();
+                            }else {
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
                             }
                             break;
                         case "troll.lag":
-                            if(lagPlayers.contains(toTroll)){
-                                lagPlayers.remove(toTroll);
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".Lag")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".Lag",false);
+                                plugin.saveData();
                                 player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 is no longer laggy.");
                             }else{
-                                lagPlayers.add(toTroll);
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".Lag",true);
+                                plugin.saveData();
                                 player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 is now laggy.");
                             }
                             if(closequestion){
                                 player.closeInventory();
+                            }else{
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
                             }
                             break;
                         case "troll.sky":
@@ -166,30 +179,106 @@ public class TrollMenuFunktion implements Listener {
                                 player.closeInventory();
                             }
                             break;
+                        case "troll.reverse":
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".Reverse")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".Reverse",false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 sends not longer reverse messages.");
+                            }else{
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".Reverse",true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 sends now reverse messages.");
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }else{
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
+                            }
+                            break;
+                        case "troll.dropmain":
+                            if(toTroll.getItemInHand().getItemMeta() == null){
+                                player.sendMessage(Main.PREFIX+"§cThat Player has nothing in his hand.");
+                                return;
+                            }
+                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 has dropped his item.");
+                            toTroll.getWorld().dropItem(toTroll.getLocation(), toTroll.getItemInHand()).setPickupDelay(80);
+                            toTroll.getInventory().setItemInHand(null);
+                            if(closequestion){
+                                player.closeInventory();
+                            }
+                            break;
+                        case "troll.newhead":
+                            if(toTroll.getItemInHand().getItemMeta() == null){
+                                player.sendMessage(Main.PREFIX+"§cThat Player has nothing in his hand.");
+                                return;
+                            }
+                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 has now a new head.");
+                            if(toTroll.getInventory().getHelmet() == null) {
+                                toTroll.getInventory().setHelmet(toTroll.getItemInHand());
+                                toTroll.getInventory().setItemInHand(null);
+                            }else{
+                                toTroll.getWorld().dropItemNaturally(toTroll.getLocation(), toTroll.getInventory().getHelmet());
+                                toTroll.getInventory().setHelmet(toTroll.getItemInHand());
+                                toTroll.getInventory().setItemInHand(null);
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }
+                            break;
+                        case "troll.scare":
+                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 has now a new head.");
+                            toTroll.playSound(toTroll.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.MASTER, 1.0F, 1.0F);
+                            toTroll.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,60,1));
+                            for(int i = 0; i < 32; ++i) {
+                                toTroll.playSound(toTroll.getLocation(), Sound.ITEM_TOTEM_USE, SoundCategory.MASTER, 1.0F, 1.0F);
+                                toTroll.playSound(toTroll.getLocation(), Sound.ENTITY_GHAST_HURT, SoundCategory.MASTER, 1.0F, 1.0F);
+                                toTroll.playSound(toTroll.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_DEATH, 1.0F, 1.0F);
+                                toTroll.playSound(toTroll.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_CURSE, 1.0F, 1.0F);
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }
+                            break;
                     }
                 }
             }
         }
     }
 
-    private ArrayList<Player> freezedPlayers = new ArrayList<>();
-    private ArrayList<Player> lagPlayers = new ArrayList<>();
-
     @EventHandler
     public void onMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
 
-        if(freezedPlayers.contains(event.getPlayer())){
+        if(plugin.yaml.getBoolean("ActiveTrolls."+player.getUniqueId()+".Frozen")){
             event.setCancelled(true);
         }
 
-        if(lagPlayers.contains(event.getPlayer())){
+        if(plugin.yaml.getBoolean("ActiveTrolls."+player.getUniqueId()+".Lag")){
             Random r = new Random();
             int random = r.nextInt(10);
             if(random == 0){
                 event.getPlayer().teleport(event.getFrom());
             }
         }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event){
+        if(plugin.yaml.getBoolean("ActiveTrolls."+event.getPlayer().getUniqueId()+".Reverse")){
+            event.setMessage(reverseMessage(event.getMessage()));
+        }
+    }
+
+    public String reverseMessage(String string) {
+        StringBuilder res = new StringBuilder();
+        int length = string.length();
+
+        for(int i = length - 1; i >= 0; --i) {
+            res.append(string.charAt(i));
+        }
+
+        return res.toString();
     }
 
 
@@ -201,7 +290,7 @@ public class TrollMenuFunktion implements Listener {
         for(int var5 = 0; var5 < var4; ++var5) {
             ItemStack clothes = var3[var5];
             if (clothes != null) {
-                loc.getWorld().dropItemNaturally(loc, clothes.clone());
+                loc.getWorld().dropItemNaturally(loc, clothes.clone()).setPickupDelay(100);
             }
         }
 
@@ -218,7 +307,7 @@ public class TrollMenuFunktion implements Listener {
         for(int var6 = 0; var6 < var5; ++var6) {
             ItemStack stuff = var4[var6];
             if (stuff != null) {
-                loc.getWorld().dropItemNaturally(loc, stuff.clone());
+                loc.getWorld().dropItemNaturally(loc, stuff.clone()).setPickupDelay(100);
             }
         }
 

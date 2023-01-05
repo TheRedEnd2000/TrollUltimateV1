@@ -30,6 +30,15 @@ public class TrollCommand implements CommandExecutor {
                     plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(plugin.getOnlinePlayerInventory(), player);
                     player.openInventory(plugin.getOnlinePlayerInventory());
                 }else if(args.length == 1){
+                    if(args[0].equalsIgnoreCase("reload")){
+                        try {
+                            player.sendMessage(Main.PREFIX+"§7Config was §2successfully §7reloaded.");
+                            plugin.reloadConfig();
+                        }catch (Exception e){
+                            player.sendMessage(Main.PREFIX+"§7There was an error. Please delete the config and start the server again.");
+                        }
+                        return true;
+                    }
                     Player totroll = Bukkit.getPlayer(args[0]);
                     if(totroll == null){
                         player.sendMessage(Main.PREFIX+"§cI can't find this Player.");
@@ -52,7 +61,7 @@ public class TrollCommand implements CommandExecutor {
                     plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,totroll);
                     player.openInventory(plugin.getTrollMenuInventory());
                 }else
-                    player.sendMessage(Main.PREFIX+"§7Usage: §6/trollultimate (Player)");
+                    player.sendMessage(Main.PREFIX+"§7Usage: §6/trollultimate <Player / reloard>");
             }else
                 player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
         }else

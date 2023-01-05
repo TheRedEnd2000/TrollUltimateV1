@@ -8,6 +8,8 @@ Messages:
   No Permission Message: "&cYou have no permission to use this command."
   Can't troll yourself message: "&cYou can't troll yourself."
   Can't troll players with op message: "&cYou can't troll players with op."
+  Troll enabled: "&2✔ &7Enabled"
+  Troll disabled: "&4❌ &7Disabled"
 
 #Settings
 Settings:
