@@ -16,7 +16,7 @@ introduction:
 description:
   de: |
     # Überblick
-    Fügt den Command /trollultimate hinzu.
+    Fügt den Command /trollultimate <Player / reload> hinzu.
     
     # Nutzung
     Bei nutzung des Befehls wird ein Online Player Inventory geöffnet. Danach kann man den Spieler auswahlen und ihn dann Trollen.
