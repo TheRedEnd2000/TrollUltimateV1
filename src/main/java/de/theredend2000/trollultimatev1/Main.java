@@ -3,6 +3,7 @@ package de.theredend2000.trollultimatev1;
 import de.theredend2000.trollultimatev1.commands.TrollCommand;
 import de.theredend2000.trollultimatev1.listeners.*;
 import de.theredend2000.trollultimatev1.listeners.trollitems.ItemFunktions;
+import de.theredend2000.trollultimatev1.managers.CheckConfig;
 import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
 import org.bukkit.Bukkit;
@@ -30,6 +31,7 @@ public final class Main extends JavaPlugin {
 
     private OnlinePlayersMenu onlinePlayersMenu;
     private TrollMenuManager trollMenuManager;
+    private CheckConfig checkConfig;
     public Inventory onlinePlayerInventory = Bukkit.createInventory(null, 54, "Select a Player you want to Troll");
     public Inventory trollMenuInventory = Bukkit.createInventory(null,54,"Troll Menu");
     public YamlConfiguration yaml;
@@ -46,8 +48,9 @@ public final class Main extends JavaPlugin {
         initManagers();
 
         if(!isOutdated()){
-            Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§6§lTrollUltimate is fully updated.");
+            Bukkit.getConsoleSender().sendMessage(PREFIX+"§6§lTrollUltimate is fully updated.");
         }
+        //checkConfig.checkConfigPaths();
         Bukkit.getConsoleSender().sendMessage(PREFIX+"§aTroll Plugin started on version §6§l"+getDescription().getVersion());
     }
 
@@ -69,6 +72,7 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new ItemFunktions(this),this);
         pluginManager.registerEvents(new UpdateListener(this),this);
         pluginManager.registerEvents(new SavePlayerStats(this),this);
+        pluginManager.registerEvents(new InvseeFunktions(this),this);
     }
 
     public void initCommands(){
@@ -78,6 +82,7 @@ public final class Main extends JavaPlugin {
     public void initManagers(){
         onlinePlayersMenu = new OnlinePlayersMenu();
         trollMenuManager = new TrollMenuManager(this);
+        checkConfig = new CheckConfig(this);
     }
 
     public boolean isOutdated() {

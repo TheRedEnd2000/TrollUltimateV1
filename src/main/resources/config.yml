@@ -1,6 +1,7 @@
 #Permissions
 Permissions:
   Open Troll Menu: trollultimate.open
+  Reload config: trollultimate.reload
 
 
 #Messages
@@ -16,4 +17,6 @@ Settings:
   Troll other players with op: true
   Troll yourself: true
   Close inventory when troll entered: false
-  Send message when neu plugin version is out: true
+  Send message when new plugin version is out: true
+#this should always be true because it can ruin your server!
+  Only operator can use troll items: true

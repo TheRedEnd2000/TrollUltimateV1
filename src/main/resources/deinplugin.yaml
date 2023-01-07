@@ -1,0 +1,34 @@
+specVersion: 1.2
+type: plugin
+name:
+  en: TrollUltimate
+authors:
+  - TheRedEnd2000
+download:
+  url: https://www.spigotmc.org/resources/troll-ultimate.107189/
+  name: SpigotMC
+supportedPlatforms:
+  - spigot
+supportedGameVersions: ^1.19
+category: fun
+introduction:
+  de: Ein lustiges Plugin, das euch viele neue Trolls auf euren Server bringt.
+description:
+  de: |
+    # Überblick
+    Fügt den Command /trollultimate hinzu.
+    
+    # Nutzung
+    Bei nutzung des Befehls wird ein Online Player Inventory geöffnet. Danach kann man den Spieler auswahlen und ihn dann Trollen.
+installation:
+  de: |
+    - Herunterladen der Plugin-Datei
+    - Ablegen der Datei im Plugins-Ordner
+    - Server neustarten
+    - Gegebenfalls muss man nach einer neuen Pluginversion die Config löschen und nue erstellen lassen.
+tags:
+  - trollultimate
+images:
+  - https://proxy.spigotmc.org/84a53bea2ed3ca8eb90209a439ab26d4c332eeec?url=https%3A%2F%2Fcdn.discordapp.com%2Fattachments%2F996749934747463680%2F1060252334745202780%2Fbild2.png
+  - https://proxy.spigotmc.org/754c42a09a702f2fd56aec9b107301b0ff259bd4?url=https%3A%2F%2Fcdn.discordapp.com%2Fattachments%2F996749934747463680%2F1060252335164625016%2FBild1.PNG
+icon: https://www.spigotmc.org/data/resource_icons/107/107189.jpg?1672833629

@@ -23,6 +23,14 @@ public class SavePlayerStats implements Listener {
             plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".Reverse",false);
             plugin.saveData();
         }
+        if(!plugin.yaml.contains("ActiveTrolls."+player.getUniqueId()+".SwitchWater")){
+            plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".SwitchWater",false);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("ActiveTrolls."+player.getUniqueId()+".NoJump")){
+            plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".NoJump",false);
+            plugin.saveData();
+        }
     }
 
 }

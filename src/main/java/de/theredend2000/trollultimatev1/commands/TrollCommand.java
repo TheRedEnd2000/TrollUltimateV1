@@ -25,19 +25,24 @@ public class TrollCommand implements CommandExecutor {
             Player player = (Player) sender;
             String permission = plugin.getConfig().getString("Permissions.Open Troll Menu");
             assert permission != null;
-            if(player.hasPermission(permission)){
                 if(args.length == 0) {
+                    if(player.hasPermission(permission)){
                     plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(plugin.getOnlinePlayerInventory(), player);
                     player.openInventory(plugin.getOnlinePlayerInventory());
+                    }else
+                        player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
                 }else if(args.length == 1){
                     if(args[0].equalsIgnoreCase("reload")){
-                        try {
-                            player.sendMessage(Main.PREFIX+"§7Config was §2successfully §7reloaded.");
-                            plugin.reloadConfig();
-                        }catch (Exception e){
-                            player.sendMessage(Main.PREFIX+"§7There was an error. Please delete the config and start the server again.");
-                        }
-                        return true;
+                        if(player.hasPermission(Objects.requireNonNull(plugin.getConfig().getString("Permissions.Reload config")))) {
+                            try {
+                                player.sendMessage(Main.PREFIX + "§7Config was §2successfully §7reloaded.");
+                                plugin.reloadConfig();
+                            } catch (Exception e) {
+                                player.sendMessage(Main.PREFIX + "§7There was an error. Please delete the config and start the server again.");
+                            }
+                            return true;
+                        }else
+                            player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
                     }
                     Player totroll = Bukkit.getPlayer(args[0]);
                     if(totroll == null){
@@ -62,8 +67,6 @@ public class TrollCommand implements CommandExecutor {
                     player.openInventory(plugin.getTrollMenuInventory());
                 }else
                     player.sendMessage(Main.PREFIX+"§7Usage: §6/trollultimate <Player / reloard>");
-            }else
-                player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
         }else
             sender.sendMessage("§7This command can only used by players.");
         return false;

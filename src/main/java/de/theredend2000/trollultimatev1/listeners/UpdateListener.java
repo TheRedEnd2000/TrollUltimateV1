@@ -26,8 +26,6 @@ public class UpdateListener implements Listener {
     public UpdateListener(Main plugin){
         this.plugin = plugin;
     }
-
-    private String key = "key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=";
     public boolean isOutdated(Player player) {
         try {
             HttpURLConnection c = (HttpURLConnection)new URL("https://api.spigotmc.org/legacy/update.php?resource=107189").openConnection();
@@ -51,7 +49,7 @@ public class UpdateListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        boolean sendmessage = plugin.getConfig().getBoolean("Settings.Send message when neu plugin version is out");
+        boolean sendmessage = plugin.getConfig().getBoolean("Settings.Send message when new plugin version is out");
         if(sendmessage){
             if(!player.isOp()) return;
             if(isOutdated(player)) return;

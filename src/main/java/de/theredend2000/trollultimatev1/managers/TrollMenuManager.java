@@ -58,6 +58,14 @@ public class TrollMenuManager {
         inventory.setItem(21, new ItemBuilder(Material.DIAMOND_PICKAXE).setDisplayname("§cDrop Hand").setLore("", "§7Drop the item in the player's hand").setLocalizedName("troll.dropmain").build());
         inventory.setItem(22, new ItemBuilder(Material.CREEPER_HEAD).setDisplayname("§cNew Head").setLore("", "§7Puts the item in his hand on his head").setLocalizedName("troll.newhead").build());
         inventory.setItem(23, new ItemBuilder(Material.CARVED_PUMPKIN).setDisplayname("§cScare").setLore("", "§7Scare a player").setLocalizedName("troll.scare").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+ playertoTroll.getUniqueId()+".NoJump")) {
+            inventory.setItem(24, new ItemBuilder(Material.GOLDEN_BOOTS).setDisplayname("§cNoJump §8(§7toggle§8)").setLore("", "§7Set if the player can jump",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.nojump").build());
+        }else
+            inventory.setItem(24, new ItemBuilder(Material.GOLDEN_BOOTS).setDisplayname("§cNoJump §8(§7toggle§8)").setLore("", "§7Set if the player can jump",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.nojump").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+ playertoTroll.getUniqueId()+".SwitchWater")) {
+            inventory.setItem(25, new ItemBuilder(Material.LAVA_BUCKET).setDisplayname("§cWater Switch §8(§7toggle§8)").setLore("", "§7Switch water an lava for the player",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.switchwater").build());
+        }else
+            inventory.setItem(25, new ItemBuilder(Material.LAVA_BUCKET).setDisplayname("§cWater Switch §8(§7toggle§8)").setLore("", "§7Switch water an lava for the player",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.switchwater").build());
     }
     public void setPage2Inventory(Inventory inventory, Player player, Player playertoTroll){
         inventory.clear();

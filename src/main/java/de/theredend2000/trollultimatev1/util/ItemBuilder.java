@@ -2,6 +2,7 @@ package de.theredend2000.trollultimatev1.util;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -49,10 +50,11 @@ public class ItemBuilder {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
-    public ItemBuilder setSkullOwner(String owner){
+    public ItemBuilder setSkullOwner(Player owner){
         try{
             SkullMeta im = (SkullMeta)itemStack.getItemMeta();
-            im.setOwner(owner);
+            im.setOwningPlayer(owner);
+            itemStack.setItemMeta(im);
         }catch(ClassCastException expected){}
         return this;
     }

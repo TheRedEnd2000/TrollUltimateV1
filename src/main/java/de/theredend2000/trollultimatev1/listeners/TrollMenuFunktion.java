@@ -7,6 +7,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -18,16 +19,16 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class TrollMenuFunktion implements Listener {
 
     private Main plugin;
+    private InvseeFunktions invseeFunktions;
 
     public TrollMenuFunktion(Main plugin){
         this.plugin = plugin;
+        invseeFunktions = new InvseeFunktions(plugin);
     }
 
     @EventHandler
@@ -227,7 +228,7 @@ public class TrollMenuFunktion implements Listener {
                             }
                             break;
                         case "troll.scare":
-                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 has now a new head.");
+                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 got scared.");
                             toTroll.playSound(toTroll.getLocation(), Sound.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.MASTER, 1.0F, 1.0F);
                             toTroll.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,60,1));
                             for(int i = 0; i < 32; ++i) {
@@ -240,8 +241,59 @@ public class TrollMenuFunktion implements Listener {
                                 player.closeInventory();
                             }
                             break;
+                        case "troll.invsee":
+                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 inventory was opened.");
+                            Inventory inventory = Bukkit.createInventory(null,54,"PlayerInventory");
+                            invseeFunktions.createInventory(inventory,player,toTroll);
+                            player.openInventory(inventory);
+                            if(closequestion){
+                                player.closeInventory();
+                            }
+                            break;
+                        case "troll.switchwater":
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".SwitchWater")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".SwitchWater",false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 water is now normal again.");
+                            }else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".SwitchWater", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 water is now switch with lava.");
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }else{
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
+                            }
+                            break;
+                        case "troll.nojump":
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".NoJump")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".NoJump",false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 can jump now again.");
+                            }else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".NoJump", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 can't jump anymore.");
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }else{
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
+                            }
+                            break;
                     }
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if(plugin.yaml.getBoolean("ActiveTrolls."+event.getEntity().getUniqueId()+".SwitchWater")) {
+            if (event.getCause() == EntityDamageEvent.DamageCause.LAVA || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
+                event.setCancelled(true);
             }
         }
     }
@@ -259,6 +311,16 @@ public class TrollMenuFunktion implements Listener {
             int random = r.nextInt(10);
             if(random == 0){
                 event.getPlayer().teleport(event.getFrom());
+            }
+        }
+        if(plugin.yaml.getBoolean("ActiveTrolls."+player.getUniqueId()+".SwitchWater")){
+            if(player.isInWater()){
+                player.damage(2.0);
+            }
+        }
+        if(plugin.yaml.getBoolean("ActiveTrolls."+player.getUniqueId()+".NoJump")) {
+            if (event.getTo().getY() > event.getFrom().getY()) {
+                event.setCancelled(true);
             }
         }
     }
@@ -313,6 +375,23 @@ public class TrollMenuFunktion implements Listener {
 
         p.getInventory().clear();
         p.updateInventory();
+    }
+
+    private int taskId;
+    public void startTimer(int seconds) {
+        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            int timeLeft = seconds;
+
+            @Override
+            public void run() {
+
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    Bukkit.getScheduler().cancelTask(taskId);
+                }
+            }
+        }, 0, 20);
     }
 
 }
