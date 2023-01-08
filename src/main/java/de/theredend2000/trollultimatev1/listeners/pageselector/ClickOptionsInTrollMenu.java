@@ -1,4 +1,4 @@
-package de.theredend2000.trollultimatev1.listeners;
+package de.theredend2000.trollultimatev1.listeners.pageselector;
 
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.Bukkit;
@@ -35,6 +35,9 @@ public class ClickOptionsInTrollMenu implements Listener {
                             break;
                         case "trollmenu.page1":
                             plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                            break;
+                        case "trollmenu.mob-spawns":
+                            plugin.getTrollMenuManager().setMobSpawnInventory(plugin.getTrollMenuInventory(),player,toTroll);
                             break;
                         /*case "trollmenu.page2":
                             plugin.getTrollMenuManager().setPage2Inventory(plugin.getTrollMenuInventory(),player,toTroll);

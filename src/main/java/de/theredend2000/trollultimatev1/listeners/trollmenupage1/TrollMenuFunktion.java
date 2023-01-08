@@ -1,19 +1,18 @@
-package de.theredend2000.trollultimatev1.listeners;
+package de.theredend2000.trollultimatev1.listeners.trollmenupage1;
 
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -243,7 +242,7 @@ public class TrollMenuFunktion implements Listener {
                             break;
                         case "troll.invsee":
                             player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 inventory was opened.");
-                            Inventory inventory = Bukkit.createInventory(null,54,"PlayerInventory");
+                            Inventory inventory = toTroll.getInventory();
                             invseeFunktions.createInventory(inventory,player,toTroll);
                             player.openInventory(inventory);
                             if(closequestion){
@@ -284,6 +283,48 @@ public class TrollMenuFunktion implements Listener {
                                 player.openInventory(plugin.getTrollMenuInventory());
                             }
                             break;
+                        case "troll.nobreak":
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".NoBreak")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".NoBreak",false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 can now break blocks again.");
+                            }else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".NoBreak", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 can't break blocks anymore.");
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }else{
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
+                            }
+                            break;
+                        case "troll.noplace":
+                            if(plugin.yaml.getBoolean("ActiveTrolls."+toTroll.getUniqueId()+".NoPlace")){
+                                plugin.yaml.set("ActiveTrolls."+toTroll.getUniqueId()+".NoPlace",false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 can now place blocks again.");
+                            }else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".NoPlace", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 can't place blocks anymore.");
+                            }
+                            if(closequestion){
+                                player.closeInventory();
+                            }else{
+                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                                player.openInventory(plugin.getTrollMenuInventory());
+                            }
+                            break;
+                        case "troll.anvildrop":
+                            player.sendMessage(Main.PREFIX+"§6"+toTroll.getDisplayName()+"§7 got an anvil dropped on his head.");
+                            Location totrollloc = toTroll.getLocation().getBlock().getLocation().add(0,40,0);
+                            totrollloc.getWorld().getBlockAt(totrollloc).setType(Material.DAMAGED_ANVIL);
+                            if(closequestion){
+                                player.closeInventory();
+                            }
+                            break;
                     }
                 }
             }
@@ -322,6 +363,21 @@ public class TrollMenuFunktion implements Listener {
             if (event.getTo().getY() > event.getFrom().getY()) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent event){
+        Player player = event.getPlayer();
+        if(plugin.yaml.getBoolean("ActiveTrolls."+player.getUniqueId()+".NoBreak")) {
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onPlace(BlockPlaceEvent event){
+        Player player = event.getPlayer();
+        if(plugin.yaml.getBoolean("ActiveTrolls."+player.getUniqueId()+".NoPlace")) {
+            event.setCancelled(true);
         }
     }
 

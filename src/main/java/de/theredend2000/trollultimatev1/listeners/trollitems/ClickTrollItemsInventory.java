@@ -1,4 +1,4 @@
-package de.theredend2000.trollultimatev1.listeners;
+package de.theredend2000.trollultimatev1.listeners.trollitems;
 
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.ChatColor;
@@ -39,6 +39,7 @@ public class ClickTrollItemsInventory implements Listener {
                         case "troll.item.explosivebow":
                         case "troll.item.infinitetnt":
                         case "troll.item.fireballlauncher":
+                        case "troll.item.knockbackstick++":
                             player.getInventory().addItem(event.getCurrentItem());
                             if(closequestion){
                                 player.closeInventory();

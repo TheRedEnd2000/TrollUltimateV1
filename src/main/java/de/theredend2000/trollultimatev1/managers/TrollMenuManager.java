@@ -1,7 +1,7 @@
 package de.theredend2000.trollultimatev1.managers;
 
 import de.theredend2000.trollultimatev1.Main;
-import de.theredend2000.trollultimatev1.listeners.TrollMenuFunktion;
+import de.theredend2000.trollultimatev1.listeners.trollmenupage1.TrollMenuFunktion;
 import de.theredend2000.trollultimatev1.util.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -66,12 +66,52 @@ public class TrollMenuManager {
             inventory.setItem(25, new ItemBuilder(Material.LAVA_BUCKET).setDisplayname("§cWater Switch §8(§7toggle§8)").setLore("", "§7Switch water an lava for the player",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.switchwater").build());
         }else
             inventory.setItem(25, new ItemBuilder(Material.LAVA_BUCKET).setDisplayname("§cWater Switch §8(§7toggle§8)").setLore("", "§7Switch water an lava for the player",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.switchwater").build());
+        inventory.setItem(26, new ItemBuilder(Material.CHEST).setDisplayname("§cInvsee").setLore("", "§7Invsee a player").setLocalizedName("troll.invsee").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+ playertoTroll.getUniqueId()+".NoBreak")) {
+            inventory.setItem(27, new ItemBuilder(Material.DIAMOND_SHOVEL).setDisplayname("§cBlock Break §8(§7toggle§8)").setLore("", "§7Set if the player can break blocks",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.nobreak").build());
+        }else
+            inventory.setItem(27, new ItemBuilder(Material.DIAMOND_SHOVEL).setDisplayname("§cBlock Break §8(§7toggle§8)").setLore("", "§7Set if the player can break blocks",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.nobreak").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+ playertoTroll.getUniqueId()+".NoPlace")) {
+            inventory.setItem(28, new ItemBuilder(Material.GRASS_BLOCK).setDisplayname("§cBlock Place §8(§7toggle§8)").setLore("", "§7Set if the player can place blocks",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.noplace").build());
+        }else
+            inventory.setItem(28, new ItemBuilder(Material.GRASS_BLOCK).setDisplayname("§cBlock Place §8(§7toggle§8)").setLore("", "§7Set if the player can place blocks",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.noplace").build());
+        inventory.setItem(29, new ItemBuilder(Material.ANVIL).setDisplayname("§cAnvil Drop").setLore("", "§7Drops an anvil on the player").setLocalizedName("troll.anvildrop").build());
     }
     public void setPage2Inventory(Inventory inventory, Player player, Player playertoTroll){
         inventory.clear();
         setPages(inventory);
         setBottem(inventory, playertoTroll);
     }
+
+    public void setMobSpawnInventory(Inventory inventory, Player player, Player playertoTroll){
+        inventory.clear();
+        setPages(inventory);
+        setBottem(inventory, playertoTroll);
+        inventory.setItem(9, new ItemBuilder(Material.PIG_SPAWN_EGG).setDisplayname("§6Pig").setLore("","§7A pig spawns at the players location.").setLocalizedName("troll.spawn.pig").build());
+        inventory.setItem(10, new ItemBuilder(Material.COW_SPAWN_EGG).setDisplayname("§6Cow").setLore("","§7A cow spawns at the players location.").setLocalizedName("troll.spawn.cow").build());
+        inventory.setItem(11, new ItemBuilder(Material.CHICKEN_SPAWN_EGG).setDisplayname("§6Chicken").setLore("","§7A chicken spawns at the players location.").setLocalizedName("troll.spawn.chicken").build());
+        inventory.setItem(12, new ItemBuilder(Material.SHEEP_SPAWN_EGG).setDisplayname("§6Sheep").setLore("","§7A sheep spawns at the players location.").setLocalizedName("troll.spawn.sheep").build());
+        inventory.setItem(13, new ItemBuilder(Material.WOLF_SPAWN_EGG).setDisplayname("§6Wolf").setLore("","§7A wolf spawns at the players location.").setLocalizedName("troll.spawn.wolf").build());
+        inventory.setItem(14, new ItemBuilder(Material.ZOMBIE_SPAWN_EGG).setDisplayname("§6Zombie").setLore("","§7A zombie spawns at the players location.").setLocalizedName("troll.spawn.zombie").build());
+        inventory.setItem(15, new ItemBuilder(Material.ZOMBIE_VILLAGER_SPAWN_EGG).setDisplayname("§6Zombie Villager").setLore("","§7A zombie villager spawns at the players location.").setLocalizedName("troll.spawn.zombie-villager").build());
+        inventory.setItem(16, new ItemBuilder(Material.SKELETON_SPAWN_EGG).setDisplayname("§6Skeleton").setLore("","§7A skeleton spawns at the players location.").setLocalizedName("troll.spawn.skeleton").build());
+        inventory.setItem(17, new ItemBuilder(Material.SPIDER_SPAWN_EGG).setDisplayname("§6Spider").setLore("","§7A spider spawns at the players location.").setLocalizedName("troll.spawn.spider").build());
+        inventory.setItem(18, new ItemBuilder(Material.WITCH_SPAWN_EGG).setDisplayname("§6Witch").setLore("","§7A witch spawns at the players location.").setLocalizedName("troll.spawn.witch").build());
+        inventory.setItem(19, new ItemBuilder(Material.CAVE_SPIDER_SPAWN_EGG).setDisplayname("§6Cave Spider").setLore("","§7A cave spider spawns at the players location.").setLocalizedName("troll.spawn.cave-spider").build());
+        inventory.setItem(20, new ItemBuilder(Material.PILLAGER_SPAWN_EGG).setDisplayname("§6Pillager").setLore("","§7A pillager spawns at the players location.").setLocalizedName("troll.spawn.pillager").build());
+        inventory.setItem(21, new ItemBuilder(Material.PIGLIN_SPAWN_EGG).setDisplayname("§6Piglin").setLore("","§7A piglin spawns at the players location.").setLocalizedName("troll.spawn.piglin").build());
+        inventory.setItem(22, new ItemBuilder(Material.PIGLIN_BRUTE_SPAWN_EGG).setDisplayname("§6Piglin Brute").setLore("","§7A piglin brute spawns at the players location.").setLocalizedName("troll.spawn.piglin-brute").build());
+        inventory.setItem(23, new ItemBuilder(Material.ZOMBIFIED_PIGLIN_SPAWN_EGG).setDisplayname("§6Zombiefied Piglin").setLore("","§7A zombiefied piglin brute spawns at the players location.").setLocalizedName("troll.spawn.zombiefied-piglin").build());
+        inventory.setItem(24, new ItemBuilder(Material.BLAZE_SPAWN_EGG).setDisplayname("§6Blaze").setLore("","§7A blaze spawns at the players location.").setLocalizedName("troll.spawn.blaze").build());
+        inventory.setItem(25, new ItemBuilder(Material.STRAY_SPAWN_EGG).setDisplayname("§6Stray").setLore("","§7A stray spawns at the players location.").setLocalizedName("troll.spawn.stray").build());
+        inventory.setItem(26, new ItemBuilder(Material.CREEPER_SPAWN_EGG).setDisplayname("§6Creeper").setLore("","§7A creeper spawns at the players location.").setLocalizedName("troll.spawn.creeper").build());
+        inventory.setItem(27, new ItemBuilder(Material.VINDICATOR_SPAWN_EGG).setDisplayname("§6Vindicator").setLore("","§7A vindicator spawns at the players location.").setLocalizedName("troll.spawn.vindicator").build());
+        inventory.setItem(28, new ItemBuilder(Material.WITHER_SKELETON_SPAWN_EGG).setDisplayname("§6Wither Skeleton").setLore("","§7A wither skeleton spawns at the players location.").setLocalizedName("troll.spawn.wither-skeleton").build());
+        inventory.setItem(29, new ItemBuilder(Material.ENDERMITE_SPAWN_EGG).setDisplayname("§6Endermite").setLore("","§7A endermite spawns at the players location.").setLocalizedName("troll.spawn.endermite").build());
+        inventory.setItem(30, new ItemBuilder(Material.EVOKER_SPAWN_EGG).setDisplayname("§6Evoker").setLore("","§7A evoker spawns at the players location.").setLocalizedName("troll.spawn.evoker").build());
+        inventory.setItem(31, new ItemBuilder(Material.ENDERMAN_SPAWN_EGG).setDisplayname("§6Enderman").setLore("","§7A enderman spawns at the players location.").setLocalizedName("troll.spawn.enderman").build());
+    }
+
     public void setTrollItemsInventory(Inventory inventory, Player player, Player playertoTroll){
         inventory.clear();
         setPages(inventory);
@@ -83,7 +123,7 @@ public class TrollMenuManager {
         inventory.setItem(9,new ItemBuilder(Material.BOW).setDisplayname("§bExplosive Bow").setLore("","§7Creates an explosion at the arrows location").setLocalizedName("troll.item.explosivebow").build());
         inventory.setItem(10,new ItemBuilder(Material.TNT).setDisplayname("§bInfinite TNT").setLore("","§7This Tnt never runs out and immediately starts to light.").setLocalizedName("troll.item.infinitetnt").build());
         inventory.setItem(11,new ItemBuilder(Material.BLAZE_ROD).setDisplayname("§bFireball Launcher").setLore("","§7Spawns an Fireball in the direction you look.").setLocalizedName("troll.item.fireballlauncher").build());
-        //inventory.setItem(12,new ItemBuilder(Material.BOW).setDisplayname("§cFake TNT Line Launcher").setLore("","§7Launches tnt every 2 ticks at the arrows locationbut it do not explode").setLocalizedName("troll.item.tntlinelauncher").build());
+        inventory.setItem(12,new ItemBuilder(Material.STICK).setDisplayname("§bKnockback Stick ++").setLore("","§7You can set the strength of the knockback","§8Up: §6RIGHT-CLICK","§8Down: §6SHIFT+RIGHT-CLICK").addEnchant(Enchantment.KNOCKBACK,1).setLocalizedName("troll.item.knockbackstick++").build());
         //inventory.setItem(13,new ItemBuilder(Material.IRON_DOOR).setDisplayname("§cFakeKick").setLore("","§7Kicks an Player with a weird message").setLocalizedName("troll.fakekick").build());
     }
 
@@ -96,7 +136,7 @@ public class TrollMenuManager {
         inventory.setItem(4, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l5").setLore("","§4§lNot available yet.").build());
         inventory.setItem(5, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l6").setLore("","§4§lNot available yet.").build());
         inventory.setItem(6, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l7").setLore("","§4§lNot available yet.").build());
-        inventory.setItem(7, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l8").setLore("","§4§lNot available yet.").build());
+        inventory.setItem(7, new ItemBuilder(Material.SPAWNER).setDisplayname("§7Mob Spawns").setLore("","§2§lClick to open").setLocalizedName("trollmenu.mob-spawns").build());
         inventory.setItem(8, new ItemBuilder(Material.BOW).setDisplayname("§4Troll Items").setLore("","§2§lClick to open","§4§lThese items always gets in YOUR inventory").setLocalizedName("trollmenu.trollitems").build());
     }
     private void setBottem(Inventory inventory, Player playertoTroll){

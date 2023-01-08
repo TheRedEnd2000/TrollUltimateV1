@@ -1,4 +1,4 @@
-package de.theredend2000.trollultimatev1.listeners;
+package de.theredend2000.trollultimatev1.listeners.onlineplayerselcts;
 
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.Bukkit;

@@ -1,20 +1,21 @@
 package de.theredend2000.trollultimatev1;
 
 import de.theredend2000.trollultimatev1.commands.TrollCommand;
-import de.theredend2000.trollultimatev1.listeners.*;
+import de.theredend2000.trollultimatev1.listeners.extras.SavePlayerStats;
+import de.theredend2000.trollultimatev1.listeners.extras.UpdateListener;
+import de.theredend2000.trollultimatev1.listeners.mobspawns.MobSpawnFunktions;
+import de.theredend2000.trollultimatev1.listeners.onlineplayerselcts.ClickPlayerInTrollMenu;
+import de.theredend2000.trollultimatev1.listeners.pageselector.ClickOptionsInTrollMenu;
+import de.theredend2000.trollultimatev1.listeners.trollitems.ClickTrollItemsInventory;
 import de.theredend2000.trollultimatev1.listeners.trollitems.ItemFunktions;
+import de.theredend2000.trollultimatev1.listeners.trollmenupage1.InvseeFunktions;
+import de.theredend2000.trollultimatev1.listeners.trollmenupage1.TrollMenuFunktion;
 import de.theredend2000.trollultimatev1.managers.CheckConfig;
 import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -73,6 +74,7 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new UpdateListener(this),this);
         pluginManager.registerEvents(new SavePlayerStats(this),this);
         pluginManager.registerEvents(new InvseeFunktions(this),this);
+        pluginManager.registerEvents(new MobSpawnFunktions(this),this);
     }
 
     public void initCommands(){
@@ -84,6 +86,7 @@ public final class Main extends JavaPlugin {
         trollMenuManager = new TrollMenuManager(this);
         checkConfig = new CheckConfig(this);
     }
+
 
     public boolean isOutdated() {
         try {

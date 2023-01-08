@@ -1,4 +1,4 @@
-package de.theredend2000.trollultimatev1.listeners;
+package de.theredend2000.trollultimatev1.listeners.extras;
 
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.entity.Player;
@@ -29,6 +29,14 @@ public class SavePlayerStats implements Listener {
         }
         if(!plugin.yaml.contains("ActiveTrolls."+player.getUniqueId()+".NoJump")){
             plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".NoJump",false);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("ActiveTrolls."+player.getUniqueId()+".NoBreak")){
+            plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".NoBreak",false);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("ActiveTrolls."+player.getUniqueId()+".NoPlace")){
+            plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".NoPlace",false);
             plugin.saveData();
         }
     }
