@@ -8,8 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 public class ClickOptionsInTrollMenu implements Listener {
+
+
 
     private Main plugin;
 
@@ -30,20 +33,19 @@ public class ClickOptionsInTrollMenu implements Listener {
                             player.closeInventory();
                             break;
                         case "trollmenu.back":
-                            plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(plugin.getOnlinePlayerInventory(),player);
-                            player.openInventory(plugin.getOnlinePlayerInventory());
+                            plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(player);
                             break;
                         case "trollmenu.page1":
-                            plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
+                            plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             break;
                         case "trollmenu.mob-spawns":
-                            plugin.getTrollMenuManager().setMobSpawnInventory(plugin.getTrollMenuInventory(),player,toTroll);
+                            plugin.getTrollMenuManager().setMobSpawnInventory(player,toTroll);
                             break;
                         /*case "trollmenu.page2":
                             plugin.getTrollMenuManager().setPage2Inventory(plugin.getTrollMenuInventory(),player,toTroll);
                             break;*/
                         case "trollmenu.trollitems":
-                            plugin.getTrollMenuManager().setTrollItemsInventory(plugin.getTrollMenuInventory(),player,toTroll);
+                            plugin.getTrollMenuManager().setTrollItemsInventory(player,toTroll);
                             break;
                     }
                 }

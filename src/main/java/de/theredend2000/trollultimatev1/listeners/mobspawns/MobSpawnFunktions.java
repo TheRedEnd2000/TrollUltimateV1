@@ -131,7 +131,7 @@ public class MobSpawnFunktions implements Listener {
                             break;
                         case "troll.spawn.piglin-brute":
                             toTroll.getWorld().spawn(toTroll.getLocation(), PiglinBrute.class);
-                            player.sendMessage(Main.PREFIX+"§7A §piglin brute §7spawned at §6"+toTroll.getDisplayName()+"§7.");
+                            player.sendMessage(Main.PREFIX+"§7A §2piglin brute §7spawned at §6"+toTroll.getDisplayName()+"§7.");
                             if(closequestion){
                                 player.closeInventory();
                             }

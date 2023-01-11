@@ -27,8 +27,7 @@ public class TrollCommand implements CommandExecutor {
             assert permission != null;
                 if(args.length == 0) {
                     if(player.hasPermission(permission)){
-                    plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(plugin.getOnlinePlayerInventory(), player);
-                    player.openInventory(plugin.getOnlinePlayerInventory());
+                    plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(player);
                     }else
                         player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
                 }else if(args.length == 1){
@@ -63,8 +62,7 @@ public class TrollCommand implements CommandExecutor {
                             return true;
                         }
                     }
-                    plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,totroll);
-                    player.openInventory(plugin.getTrollMenuInventory());
+                    plugin.getTrollMenuManager().setPage1Inventory(player,totroll);
                 }else
                     player.sendMessage(Main.PREFIX+"§7Usage: §6/trollultimate <Player / reloard>");
         }else

@@ -15,6 +15,7 @@ import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,8 +34,6 @@ public final class Main extends JavaPlugin {
     private OnlinePlayersMenu onlinePlayersMenu;
     private TrollMenuManager trollMenuManager;
     private CheckConfig checkConfig;
-    public Inventory onlinePlayerInventory = Bukkit.createInventory(null, 54, "Select a Player you want to Troll");
-    public Inventory trollMenuInventory = Bukkit.createInventory(null,54,"Troll Menu");
     public YamlConfiguration yaml;
     public File data = new File("plugins/TrollUltimateV1", "database.yml");
 
@@ -119,14 +118,6 @@ public final class Main extends JavaPlugin {
 
     public TrollMenuManager getTrollMenuManager() {
         return trollMenuManager;
-    }
-
-    public Inventory getOnlinePlayerInventory() {
-        return onlinePlayerInventory;
-    }
-
-    public Inventory getTrollMenuInventory() {
-        return trollMenuInventory;
     }
 
 }

@@ -43,6 +43,7 @@ public class TrollMenuFunktion implements Listener {
                     player.closeInventory();
                     return;
                 }
+                Inventory trollMenuInventory = Bukkit.createInventory(player,54,"Troll Menu");
                 if(event.getCurrentItem().getItemMeta().hasLocalizedName()){
                     switch (event.getCurrentItem().getItemMeta().getLocalizedName()){
                         case "troll.lightning":
@@ -117,8 +118,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else {
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.lag":
@@ -134,8 +134,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else{
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.sky":
@@ -192,8 +191,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else{
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.dropmain":
@@ -262,8 +260,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else{
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.nojump":
@@ -279,8 +276,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else{
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.nobreak":
@@ -296,8 +292,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else{
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.noplace":
@@ -313,8 +308,7 @@ public class TrollMenuFunktion implements Listener {
                             if(closequestion){
                                 player.closeInventory();
                             }else{
-                                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player,toTroll);
-                                player.openInventory(plugin.getTrollMenuInventory());
+                                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
                             }
                             break;
                         case "troll.anvildrop":

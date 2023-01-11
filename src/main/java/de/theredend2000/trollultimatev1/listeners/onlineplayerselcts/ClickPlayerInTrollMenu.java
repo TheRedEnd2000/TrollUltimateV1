@@ -43,8 +43,7 @@ public class ClickPlayerInTrollMenu implements Listener {
                         return;
                     }
                 }
-                plugin.getTrollMenuManager().setPage1Inventory(plugin.getTrollMenuInventory(),player, toTroll);
-                player.openInventory(plugin.getTrollMenuInventory());
+                plugin.getTrollMenuManager().setPage1Inventory(player,toTroll);
             }
         }
     }

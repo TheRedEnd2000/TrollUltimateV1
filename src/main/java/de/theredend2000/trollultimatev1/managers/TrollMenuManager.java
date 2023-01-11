@@ -3,6 +3,7 @@ package de.theredend2000.trollultimatev1.managers;
 import de.theredend2000.trollultimatev1.Main;
 import de.theredend2000.trollultimatev1.listeners.trollmenupage1.TrollMenuFunktion;
 import de.theredend2000.trollultimatev1.util.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -25,7 +26,8 @@ public class TrollMenuManager {
         trollMenuFunktion = new TrollMenuFunktion(plugin);
     }
 
-    public void setPage1Inventory(Inventory inventory, Player player, Player playertoTroll){
+    public void setPage1Inventory(Player player, Player playertoTroll){
+        Inventory inventory =  Bukkit.createInventory(player, 54, "Troll Menu");
         inventory.clear();
         setPages(inventory);
         setBottem(inventory, playertoTroll);
@@ -76,14 +78,19 @@ public class TrollMenuManager {
         }else
             inventory.setItem(28, new ItemBuilder(Material.GRASS_BLOCK).setDisplayname("§cBlock Place §8(§7toggle§8)").setLore("", "§7Set if the player can place blocks",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.noplace").build());
         inventory.setItem(29, new ItemBuilder(Material.ANVIL).setDisplayname("§cAnvil Drop").setLore("", "§7Drops an anvil on the player").setLocalizedName("troll.anvildrop").build());
+
+        player.openInventory(inventory);
     }
-    public void setPage2Inventory(Inventory inventory, Player player, Player playertoTroll){
+    public void setPage2Inventory(Player player, Player playertoTroll){
+        Inventory inventory =  Bukkit.createInventory(player, 54, "Troll Menu");
         inventory.clear();
         setPages(inventory);
         setBottem(inventory, playertoTroll);
+        player.openInventory(inventory);
     }
 
-    public void setMobSpawnInventory(Inventory inventory, Player player, Player playertoTroll){
+    public void setMobSpawnInventory(Player player, Player playertoTroll){
+        Inventory inventory =  Bukkit.createInventory(player, 54, "Troll Menu");
         inventory.clear();
         setPages(inventory);
         setBottem(inventory, playertoTroll);
@@ -110,21 +117,25 @@ public class TrollMenuManager {
         inventory.setItem(29, new ItemBuilder(Material.ENDERMITE_SPAWN_EGG).setDisplayname("§6Endermite").setLore("","§7A endermite spawns at the players location.").setLocalizedName("troll.spawn.endermite").build());
         inventory.setItem(30, new ItemBuilder(Material.EVOKER_SPAWN_EGG).setDisplayname("§6Evoker").setLore("","§7A evoker spawns at the players location.").setLocalizedName("troll.spawn.evoker").build());
         inventory.setItem(31, new ItemBuilder(Material.ENDERMAN_SPAWN_EGG).setDisplayname("§6Enderman").setLore("","§7A enderman spawns at the players location.").setLocalizedName("troll.spawn.enderman").build());
+
+        player.openInventory(inventory);
     }
 
-    public void setTrollItemsInventory(Inventory inventory, Player player, Player playertoTroll){
+    public void setTrollItemsInventory(Player player, Player playertoTroll){
+        Inventory inventory =  Bukkit.createInventory(player, 54, "Troll Menu");
         inventory.clear();
         setPages(inventory);
         setBottem(inventory, playertoTroll);
-        /*int[] glass = new int[]{46,47,48,50,51,52};
-        for(int i = 0; i < glass.length; i++){
-            inventory.setItem(glass[i], new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayname("§c").build());
-        }*/
-        inventory.setItem(9,new ItemBuilder(Material.BOW).setDisplayname("§bExplosive Bow").setLore("","§7Creates an explosion at the arrows location").setLocalizedName("troll.item.explosivebow").build());
-        inventory.setItem(10,new ItemBuilder(Material.TNT).setDisplayname("§bInfinite TNT").setLore("","§7This Tnt never runs out and immediately starts to light.").setLocalizedName("troll.item.infinitetnt").build());
-        inventory.setItem(11,new ItemBuilder(Material.BLAZE_ROD).setDisplayname("§bFireball Launcher").setLore("","§7Spawns an Fireball in the direction you look.").setLocalizedName("troll.item.fireballlauncher").build());
-        inventory.setItem(12,new ItemBuilder(Material.STICK).setDisplayname("§bKnockback Stick ++").setLore("","§7You can set the strength of the knockback","§8Up: §6RIGHT-CLICK","§8Down: §6SHIFT+RIGHT-CLICK").addEnchant(Enchantment.KNOCKBACK,1).setLocalizedName("troll.item.knockbackstick++").build());
-        //inventory.setItem(13,new ItemBuilder(Material.IRON_DOOR).setDisplayname("§cFakeKick").setLore("","§7Kicks an Player with a weird message").setLocalizedName("troll.fakekick").build());
+        inventory.setItem(9,new ItemBuilder(Material.BOW).setDisplayname("§bExplosive Bow").setLore("","§7Creates an explosion at the arrows location","","§4§lTROLL ITEM").setLocalizedName("troll.item.explosivebow").build());
+        inventory.setItem(10,new ItemBuilder(Material.TNT).setDisplayname("§bInfinite TNT").setLore("","§7This Tnt never runs out and immediately starts to light.","","§4§lTROLL ITEM").setLocalizedName("troll.item.infinitetnt").build());
+        inventory.setItem(11,new ItemBuilder(Material.BLAZE_ROD).setDisplayname("§bFireball Launcher").setLore("","§7Spawns an Fireball in the direction you look.","","§4§lTROLL ITEM").setLocalizedName("troll.item.fireballlauncher").build());
+        inventory.setItem(12,new ItemBuilder(Material.STICK).setDisplayname("§bKnockback Stick ++").setLore("","§7You can set the strength of the knockback","§8Up: §6RIGHT-CLICK","§8Down: §6SHIFT+RIGHT-CLICK","","§4§lTROLL ITEM").addEnchant(Enchantment.KNOCKBACK,1).setLocalizedName("troll.item.knockbackstick++").build());
+        inventory.setItem(13,new ItemBuilder(Material.FISHING_ROD).setDisplayname("§bGrappling Hook").setLore("","§7Board yourself through the air.","","§4§lTROLL ITEM").setLocalizedName("troll.item.grapplinghook").build());
+        inventory.setItem(14,new ItemBuilder(Material.BOW).setDisplayname("§bImmediate Bow").setLore("","§7This bow shoots instantly.","§7Needs no arrows.","","§4§lTROLL ITEM").setLocalizedName("troll.item.immediatebow").build());
+        inventory.setItem(15,new ItemBuilder(Material.BOW).setDisplayname("§bTriple Bow").setLore("","§7This Bow shoots 3 arrows at the same time.","§7Needs no arrows.","","§4§lTROLL ITEM").setLocalizedName("troll.item.triplebow").build());
+        inventory.setItem(16,new ItemBuilder(Material.STICK).setDisplayname("§bStats Wand").setLore("","§7RIGHT CLICK a player to see his stats.","","§4§lTROLL ITEM").setLocalizedName("troll.item.statswand").build());
+
+        player.openInventory(inventory);
     }
 
     private void setPages(Inventory inventory){
@@ -153,17 +164,6 @@ public class TrollMenuManager {
             inventory.setItem(redglass[i], new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayname("§c").build());
         }
         inventory.setItem(53, new ItemBuilder(Material.RED_CONCRETE).setDisplayname("§cClose Menu").setLore("","§7Click to Close to Menu").setLocalizedName("trollmenu.close").build());
-    }
-
-    private void buildItem(int slot, Inventory inventory, String displayname, String... lore){
-        ItemStack is = new ItemStack(Material.ICE);
-        ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName(displayname);
-        meta.setLore(Arrays.asList(lore));
-        meta.addEnchant(Enchantment.WATER_WORKER,1,true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        is.setItemMeta(meta);
-        inventory.setItem(slot,is);
     }
 
 }

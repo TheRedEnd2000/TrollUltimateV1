@@ -40,6 +40,10 @@ public class ClickTrollItemsInventory implements Listener {
                         case "troll.item.infinitetnt":
                         case "troll.item.fireballlauncher":
                         case "troll.item.knockbackstick++":
+                        case "troll.item.grapplinghook":
+                        case "troll.item.immediatebow":
+                        case "troll.item.triplebow":
+                        case "troll.item.statswand":
                             player.getInventory().addItem(event.getCurrentItem());
                             if(closequestion){
                                 player.closeInventory();
