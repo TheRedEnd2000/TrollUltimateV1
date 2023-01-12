@@ -41,6 +41,7 @@ public class ItemFunktions implements Listener {
         if(event.getEntity() instanceof Fireball) return;
         if(event.getEntity() instanceof FishHook) return;
         Arrow arrow = (Arrow) event.getEntity();
+        if(!(arrow.getShooter() instanceof Player)) return;
         Player player = (Player) arrow.getShooter();
         if(player.getItemInHand().getItemMeta() == null) return;
         if(!(event.getEntity() instanceof Arrow)) return;
@@ -246,6 +247,9 @@ public class ItemFunktions implements Listener {
         if(!(event.getRightClicked() instanceof Player)) return;
         Player player = event.getPlayer();
         Player toTroll = (Player) event.getRightClicked();
+        if(player.getInventory().getItemInHand().getItemMeta() == null){
+            return;
+        }
 
         if (event.getRightClicked().getType().equals(EntityType.PLAYER)) {
             String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
@@ -326,10 +330,10 @@ public class ItemFunktions implements Listener {
             Player toTroll = player.getServer().getPlayerExact(ChatColor.stripColor(event.getInventory().getItem(3).getItemMeta().getDisplayName()));
             event.setCancelled(true);
             if(event.getCurrentItem() != null){
-                if(event.getCurrentItem().getType() == Material.BOW){
+                if(event.getCurrentItem().getType() == Material.BOW && event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Open Troll Inventory")){
                     plugin.getTrollMenuManager().setTrollItemsInventory(player,toTroll);
                 }
-                if(event.getCurrentItem().getType() == Material.RED_CONCRETE){
+                if(event.getCurrentItem().getType() == Material.RED_CONCRETE && event.getCurrentItem().getItemMeta().getDisplayName().equals("§4Close")){
                     player.closeInventory();
                 }
             }

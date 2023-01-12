@@ -8,15 +8,13 @@ import de.theredend2000.trollultimatev1.listeners.onlineplayerselcts.ClickPlayer
 import de.theredend2000.trollultimatev1.listeners.pageselector.ClickOptionsInTrollMenu;
 import de.theredend2000.trollultimatev1.listeners.trollitems.ClickTrollItemsInventory;
 import de.theredend2000.trollultimatev1.listeners.trollitems.ItemFunktions;
-import de.theredend2000.trollultimatev1.listeners.trollmenupage1.InvseeFunktions;
-import de.theredend2000.trollultimatev1.listeners.trollmenupage1.TrollMenuFunktion;
+import de.theredend2000.trollultimatev1.listeners.trollmenupage1.TrollMenuFunktionPage1;
+import de.theredend2000.trollultimatev1.listeners.trollmenupage2.TrollMenuFuktionPage2;
 import de.theredend2000.trollultimatev1.managers.CheckConfig;
 import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -67,12 +65,12 @@ public final class Main extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new ClickPlayerInTrollMenu(this),this);
         pluginManager.registerEvents(new ClickOptionsInTrollMenu(this),this);
-        pluginManager.registerEvents(new TrollMenuFunktion(this),this);
+        pluginManager.registerEvents(new TrollMenuFunktionPage1(this),this);
+        pluginManager.registerEvents(new TrollMenuFuktionPage2(this),this);
         pluginManager.registerEvents(new ClickTrollItemsInventory(this),this);
         pluginManager.registerEvents(new ItemFunktions(this),this);
         pluginManager.registerEvents(new UpdateListener(this),this);
         pluginManager.registerEvents(new SavePlayerStats(this),this);
-        pluginManager.registerEvents(new InvseeFunktions(this),this);
         pluginManager.registerEvents(new MobSpawnFunktions(this),this);
     }
 

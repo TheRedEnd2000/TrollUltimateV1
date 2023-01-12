@@ -42,6 +42,10 @@ public class SavePlayerStats implements Listener {
             plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".NoPlace",false);
             plugin.saveData();
         }
+        if(!plugin.yaml.contains("ActiveTrolls."+player.getUniqueId()+".NoDrop")){
+            plugin.yaml.set("ActiveTrolls."+player.getUniqueId()+".NoDrop",false);
+            plugin.saveData();
+        }
 
         if(!plugin.yaml.contains("Stats."+player.getUniqueId())){
             plugin.yaml.set("Stats."+player.getUniqueId()+".BlocksBroken",0);

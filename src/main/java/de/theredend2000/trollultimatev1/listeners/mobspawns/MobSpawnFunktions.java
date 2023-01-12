@@ -1,19 +1,11 @@
 package de.theredend2000.trollultimatev1.listeners.mobspawns;
 
 import de.theredend2000.trollultimatev1.Main;
-import de.theredend2000.trollultimatev1.listeners.trollmenupage1.InvseeFunktions;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
-import java.util.HashMap;
 
 public class MobSpawnFunktions implements Listener {
 
