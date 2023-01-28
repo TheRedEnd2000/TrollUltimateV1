@@ -2,6 +2,7 @@
 Permissions:
   Open Troll Menu: trollultimate.open
   Reload config: trollultimate.reload
+  Change password: trollultimate.change
 
 
 #Messages

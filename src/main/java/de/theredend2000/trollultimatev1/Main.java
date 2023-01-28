@@ -13,6 +13,9 @@ import de.theredend2000.trollultimatev1.listeners.trollmenupage2.TrollMenuFuktio
 import de.theredend2000.trollultimatev1.managers.CheckConfig;
 import de.theredend2000.trollultimatev1.managers.OnlinePlayersMenu;
 import de.theredend2000.trollultimatev1.managers.TrollMenuManager;
+import de.theredend2000.trollultimatev1.vanish.VanishListener;
+import de.theredend2000.trollultimatev1.vanish.VanishManager;
+import de.theredend2000.trollultimatev1.vanish.VanishSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -31,6 +34,7 @@ public final class Main extends JavaPlugin {
 
     private OnlinePlayersMenu onlinePlayersMenu;
     private TrollMenuManager trollMenuManager;
+    private VanishManager vanishManager;
     private CheckConfig checkConfig;
     public YamlConfiguration yaml;
     public File data = new File("plugins/TrollUltimateV1", "database.yml");
@@ -41,9 +45,9 @@ public final class Main extends JavaPlugin {
         this.yaml = YamlConfiguration.loadConfiguration(this.data);
         this.saveData();
 
+        initManagers();
         initListeners();
         initCommands();
-        initManagers();
 
         if(!isOutdated()){
             Bukkit.getConsoleSender().sendMessage(PREFIX+"§6§lTrollUltimate is fully updated.");
@@ -72,6 +76,9 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new UpdateListener(this),this);
         pluginManager.registerEvents(new SavePlayerStats(this),this);
         pluginManager.registerEvents(new MobSpawnFunktions(this),this);
+        pluginManager.registerEvents(new VanishListener(this),this);
+        pluginManager.registerEvents(new VanishSettings(this),this);
+        pluginManager.registerEvents(new TrollCommand(this),this);
     }
 
     public void initCommands(){
@@ -82,6 +89,7 @@ public final class Main extends JavaPlugin {
         onlinePlayersMenu = new OnlinePlayersMenu();
         trollMenuManager = new TrollMenuManager(this);
         checkConfig = new CheckConfig(this);
+        vanishManager = new VanishManager(this);
     }
 
 
@@ -118,4 +126,7 @@ public final class Main extends JavaPlugin {
         return trollMenuManager;
     }
 
+    public VanishManager getVanishManager() {
+        return vanishManager;
+    }
 }

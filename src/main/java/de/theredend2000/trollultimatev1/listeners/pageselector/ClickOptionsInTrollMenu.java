@@ -44,6 +44,9 @@ public class ClickOptionsInTrollMenu implements Listener {
                         case "trollmenu.page2":
                             plugin.getTrollMenuManager().setPage2Inventory(player,toTroll);
                             break;
+                        case "trollmenu.vanish":
+                            plugin.getTrollMenuManager().setVanishInventory(player,toTroll);
+                            break;
                         case "trollmenu.trollitems":
                             plugin.getTrollMenuManager().setTrollItemsInventory(player,toTroll);
                             break;

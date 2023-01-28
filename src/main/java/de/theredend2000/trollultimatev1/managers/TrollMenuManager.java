@@ -6,6 +6,7 @@ import de.theredend2000.trollultimatev1.util.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -47,6 +48,7 @@ public class TrollMenuManager {
         inventory.setItem(20, new ItemBuilder(Material.CARVED_PUMPKIN).setDisplayname("§cScare").setLore("", "§7Scare a player").setLocalizedName("troll.scare").build());
         inventory.setItem(21, new ItemBuilder(Material.CHEST).setDisplayname("§cInvsee").setLore("", "§7Invsee a player").setLocalizedName("troll.invsee").build());
         inventory.setItem(22, new ItemBuilder(Material.ANVIL).setDisplayname("§cAnvil Drop").setLore("", "§7Drops an anvil on the player").setLocalizedName("troll.anvildrop").build());
+        inventory.setItem(23, new ItemBuilder(Material.FEATHER).setDisplayname("§cNo Gravity").setLore("", "§7All mobs within a 20 block radius","§7 no longer have gravity").setLocalizedName("troll.nogravity").build());
 
         player.openInventory(inventory);
     }
@@ -88,6 +90,24 @@ public class TrollMenuManager {
         }else
             inventory.setItem(16, new ItemBuilder(Material.WHEAT_SEEDS).setDisplayname("§cNo Drop §8(§7toggle§8)").setLore("", "§7The player can't drops items",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.nodrop").build());
 
+        player.openInventory(inventory);
+    }
+
+    public void setVanishInventory(Player player, Player playertoTroll){
+        Inventory inventory =  Bukkit.createInventory(player, 54, "Troll Menu");
+        inventory.clear();
+        setPages(inventory);
+        setBottem(inventory, playertoTroll);
+        int[] redglass = new int[]{9,17,18,26,27,35,36,44};
+        for(int i = 0; i < redglass.length; i++){
+            inventory.setItem(redglass[i], new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setDisplayname("§c").build());
+        }
+        if(plugin.yaml.getBoolean("Vanish."+ player.getUniqueId()+".isVanished")) {
+            inventory.setItem(31, new ItemBuilder(Material.LIME_WOOL).setDisplayname("§bVanish §8(§7toggle§8)").setLore("", "§7Vanish yourself",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.vanish").build());
+        }else
+            inventory.setItem(31, new ItemBuilder(Material.RED_WOOL).setDisplayname("§bVanish §8(§7toggle§8)").setLore("", "§7Vanish yourself",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.vanish").build());
+        inventory.setItem(22, new ItemBuilder(Material.BOOK).setDisplayname("§6§lVanish Informations").setLore("","§7If you vanished no one can see you.").build());
+        inventory.setItem(43, new ItemBuilder(Material.COMPARATOR).setDisplayname("§4Settings").setLocalizedName("troll.vanish.settings").build());
         player.openInventory(inventory);
     }
 
@@ -146,9 +166,9 @@ public class TrollMenuManager {
         inventory.setItem(2, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l3").setLore("","§4§lNot available yet.").build());
         inventory.setItem(3, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l4").setLore("","§4§lNot available yet.").build());
         inventory.setItem(4, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l5").setLore("","§4§lNot available yet.").build());
-        inventory.setItem(5, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l6").setLore("","§4§lNot available yet.").build());
-        inventory.setItem(6, new ItemBuilder(Material.BARRIER).setDisplayname("§7Page §6§l7").setLore("","§4§lNot available yet.").build());
-        inventory.setItem(7, new ItemBuilder(Material.SPAWNER).setDisplayname("§7Mob Spawns").setLore("","§2§lClick to open").setLocalizedName("trollmenu.mob-spawns").build());
+        inventory.setItem(5, new ItemBuilder(Material.SPAWNER).setDisplayname("§7Mob Spawns").setLore("","§2§lClick to open").setLocalizedName("trollmenu.mob-spawns").build());
+        inventory.setItem(6, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayname("§7<-- §bTroll Player Options §8§l| §bPersonal Options §7-->").build());
+        inventory.setItem(7, new ItemBuilder(Material.SPLASH_POTION).setDisplayname("§6Vanish Options").setLore("","§2§lClick to open.").setLocalizedName("trollmenu.vanish").build());
         inventory.setItem(8, new ItemBuilder(Material.BOW).setDisplayname("§4Troll Items").setLore("","§2§lClick to open","§4§lThese items always gets in YOUR inventory").setLocalizedName("trollmenu.trollitems").build());
     }
     private void setBottem(Inventory inventory, Player playertoTroll){

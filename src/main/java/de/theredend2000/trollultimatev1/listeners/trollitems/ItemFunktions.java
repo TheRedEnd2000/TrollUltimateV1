@@ -24,7 +24,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 public class ItemFunktions implements Listener {
@@ -40,11 +42,11 @@ public class ItemFunktions implements Listener {
         if(event.getEntity() instanceof LargeFireball) return;
         if(event.getEntity() instanceof Fireball) return;
         if(event.getEntity() instanceof FishHook) return;
+        if(!(event.getEntity() instanceof Arrow)) return;
         Arrow arrow = (Arrow) event.getEntity();
         if(!(arrow.getShooter() instanceof Player)) return;
         Player player = (Player) arrow.getShooter();
         if(player.getItemInHand().getItemMeta() == null) return;
-        if(!(event.getEntity() instanceof Arrow)) return;
         String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
         Location arrowLoc = arrow.getLocation();
         World world = player.getWorld();
@@ -208,37 +210,40 @@ public class ItemFunktions implements Listener {
         }
     }
 
+
     @EventHandler
     public void onShootTripleBow(EntityShootBowEvent event){
+        if(!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if (player.getItemInHand().getItemMeta() == null) return;
         if(!(event.getProjectile() instanceof Arrow)) return;
-        if(!(event.getEntity() instanceof Player)) return;
-        String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-        if (name.equals("§bTriple Bow")) {
-            if (plugin.getConfig().getBoolean("Settings.Only operator can use troll items")) {
-                if (!player.isOp()) {
-                    player.sendMessage(Main.PREFIX + "§cOnly operators are allowed to use this Items.");
-                    return;
+        if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+            String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+            if (name.equals("§bTriple Bow")) {
+                if (plugin.getConfig().getBoolean("Settings.Only operator can use troll items")) {
+                    if (!player.isOp()) {
+                        player.sendMessage(Main.PREFIX + "§cOnly operators are allowed to use this Items.");
+                        return;
+                    }
                 }
+                Arrow arrow = (Arrow) event.getProjectile();
+
+                Arrow arrow1 = event.getEntity().getWorld().spawn(player.getEyeLocation(), Arrow.class);
+                arrow1.setDamage(arrow.getDamage() / 2);
+                arrow1.setKnockbackStrength(10);
+                arrow1.setShooter(player);
+                arrow1.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(15)));
+
+                Arrow arrow2 = event.getEntity().getWorld().spawn(player.getEyeLocation(), Arrow.class);
+                arrow2.setDamage(arrow.getDamage() / 2);
+                arrow2.setKnockbackStrength(10);
+                arrow2.setShooter(player);
+                arrow2.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(-15)));
+
+                arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                arrow1.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+                arrow2.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
             }
-            Arrow arrow = (Arrow) event.getProjectile();
-
-            Arrow arrow1 = event.getEntity().getWorld().spawn(player.getEyeLocation(), Arrow.class);
-            arrow1.setDamage(arrow.getDamage() / 2);
-            arrow1.setKnockbackStrength(10);
-            arrow1.setShooter(player);
-            arrow1.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(15)));
-
-            Arrow arrow2 = event.getEntity().getWorld().spawn(player.getEyeLocation(), Arrow.class);
-            arrow2.setDamage(arrow.getDamage() / 2);
-            arrow2.setKnockbackStrength(10);
-            arrow2.setShooter(player);
-            arrow2.setVelocity(arrow.getVelocity().rotateAroundY(Math.toRadians(-15)));
-
-            arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-            arrow1.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-            arrow2.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
         }
     }
 

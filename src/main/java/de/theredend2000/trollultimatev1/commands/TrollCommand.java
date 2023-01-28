@@ -7,16 +7,24 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
-public class TrollCommand implements CommandExecutor {
+public class TrollCommand implements CommandExecutor, Listener {
 
     private Main plugin;
+    private final ArrayList<Player> trypasswordplayers;
 
     public TrollCommand(Main plugin){
         this.plugin = plugin;
+        trypasswordplayers = new ArrayList<>();
     }
 
     @Override
@@ -26,10 +34,11 @@ public class TrollCommand implements CommandExecutor {
             String permission = plugin.getConfig().getString("Permissions.Open Troll Menu");
             assert permission != null;
                 if(args.length == 0) {
-                    if(player.hasPermission(permission)){
-                    plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(player);
-                    }else
+                    if(!player.hasPermission(permission)){
                         player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
+                        return true;
+                    }
+                    plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(player);
                 }else if(args.length == 1){
                     if(args[0].equalsIgnoreCase("reload")){
                         if(player.hasPermission(Objects.requireNonNull(plugin.getConfig().getString("Permissions.Reload config")))) {
@@ -43,6 +52,11 @@ public class TrollCommand implements CommandExecutor {
                         }else
                             player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
                     }
+                    if(!player.hasPermission(permission)){
+                        player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
+                        return true;
+                    }
+
                     Player totroll = Bukkit.getPlayer(args[0]);
                     if(totroll == null){
                         player.sendMessage(Main.PREFIX+"§cI can't find this Player.");
@@ -64,7 +78,7 @@ public class TrollCommand implements CommandExecutor {
                     }
                     plugin.getTrollMenuManager().setPage1Inventory(player,totroll);
                 }else
-                    player.sendMessage(Main.PREFIX+"§7Usage: §6/trollultimate <Player / reloard>");
+                    player.sendMessage(Main.PREFIX+"§7Usage: §6/trollultimate <Player / reload>");
         }else
             sender.sendMessage("§7This command can only used by players.");
         return false;

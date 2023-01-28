@@ -2,6 +2,8 @@ package de.theredend2000.trollultimatev1.listeners.trollmenupage1;
 
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +26,7 @@ import java.util.*;
 public class TrollMenuFunktionPage1 implements Listener {
 
     private final Main plugin;
+    private boolean flyingMobs = false;
 
     public TrollMenuFunktionPage1(Main plugin) {
         this.plugin = plugin;
@@ -201,6 +204,38 @@ public class TrollMenuFunktionPage1 implements Listener {
                             player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 got an anvil dropped on his head.");
                             Location totrollloc = toTroll.getLocation().getBlock().getLocation().add(0, 40, 0);
                             totrollloc.getWorld().getBlockAt(totrollloc).setType(Material.DAMAGED_ANVIL);
+                            if (closequestion) {
+                                player.closeInventory();
+                            }
+                            break;
+                        case "troll.nogravity":
+                            ArrayList<Entity> entities = new ArrayList<>();
+                            if(flyingMobs){
+                                player.sendMessage(Main.PREFIX+"§cPlease wait.");
+                                return;
+                            }
+                            player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 have now flying animals in his world.");
+                            flyingMobs = true;
+                            for(Entity entity : toTroll.getWorld().getNearbyEntities(toTroll.getLocation(),20,20,20)){
+                                if(!entity.getType().equals(EntityType.PLAYER)){
+                                    entity.setGravity(false);
+                                    entities.add(entity);
+                                }
+                                new BukkitRunnable() {
+                                    int seconds = 30;
+                                    @Override
+                                    public void run() {
+                                        if(seconds == 0){
+                                            cancel();
+                                            flyingMobs = false;
+                                            for(Entity tags : entities){
+                                                 tags.setGravity(true);
+                                            }
+                                        }
+                                        seconds --;
+                                    }
+                                }.runTaskTimer(plugin,0,20);
+                            }
                             if (closequestion) {
                                 player.closeInventory();
                             }

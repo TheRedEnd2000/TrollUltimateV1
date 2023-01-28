@@ -1,6 +1,7 @@
 package de.theredend2000.trollultimatev1.listeners.extras;
 
 import de.theredend2000.trollultimatev1.Main;
+import de.theredend2000.trollultimatev1.vanish.VanishManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,6 +53,27 @@ public class SavePlayerStats implements Listener {
             plugin.yaml.set("Stats."+player.getUniqueId()+".BlocksPlaced",0);
             plugin.yaml.set("Stats."+player.getUniqueId()+".Kills",0);
             plugin.yaml.set("Stats."+player.getUniqueId()+".Deaths",0);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("Vanish."+player.getUniqueId())){
+            plugin.yaml.set("Vanish."+player.getUniqueId()+".isVanished",false);
+            plugin.yaml.set("Vanish."+player.getUniqueId()+".seeOtherPlayerInVanish",false);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("Vanish."+player.getUniqueId()+".enableFly")){
+            plugin.yaml.set("Vanish."+player.getUniqueId()+".enableFly",true);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("Vanish."+player.getUniqueId()+".enablePB")){
+            plugin.yaml.set("Vanish."+player.getUniqueId()+".enablePB",false);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("Vanish."+player.getUniqueId()+".enablePickup")){
+            plugin.yaml.set("Vanish."+player.getUniqueId()+".enablePickup",true);
+            plugin.saveData();
+        }
+        if(!plugin.yaml.contains("Vanish."+player.getUniqueId()+".enableJoinQuit")){
+            plugin.yaml.set("Vanish."+player.getUniqueId()+".enableJoinQuit",false);
             plugin.saveData();
         }
     }
