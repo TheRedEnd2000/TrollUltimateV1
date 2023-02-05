@@ -1,7 +1,8 @@
 name: TrollUltimateV1
-version: 2.0
+version: 2.2
 main: de.theredend2000.trollultimatev1.Main
 api-version: 1.19
+softdepend: [NoteBlockAPI]
 commands:
   trollultimate:
     aliases:
@@ -11,3 +12,4 @@ commands:
       - tultimate
       - trollulti
     description: Open the troll menu
+  music:

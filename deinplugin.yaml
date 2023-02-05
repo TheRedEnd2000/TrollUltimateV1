@@ -25,7 +25,7 @@ installation:
     - Herunterladen der Plugin-Datei
     - Ablegen der Datei im Plugins-Ordner
     - Server neustarten
-    - Gegebenfalls muss man nach einer neuen Pluginversion die Config löschen und nue erstellen lassen.
+    - Gegebenfalls muss man nach einer neuen Pluginversion die Config löschen und neu erstellen lassen.
 tags:
   - trollultimate
 images:

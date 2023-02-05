@@ -51,7 +51,6 @@ public class VanishManager {
         for(Player online : Bukkit.getOnlinePlayers()){
             if(this.isVanished(online)){
                 player.hidePlayer(this.plugin, online);
-                player.sendMessage(online.getName()+" wurde verstcket");
             }
         }
     }

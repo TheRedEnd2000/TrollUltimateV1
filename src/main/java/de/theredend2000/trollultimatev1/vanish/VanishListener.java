@@ -51,7 +51,7 @@ public class VanishListener implements Listener {
                 vanishManager.setVanished(player, false);
                 player.sendMessage(Main.PREFIX +"§7You are not longer Vanished.");
                 if (plugin.yaml.getBoolean("Vanish."+player.getUniqueId()+".enableFly")) {
-                    if(player.getGameMode() != GameMode.CREATIVE || player.getGameMode() != GameMode.SPECTATOR) {
+                    if(!(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR)) {
                         player.setAllowFlight(false);
                         player.setFlying(false);
                     }

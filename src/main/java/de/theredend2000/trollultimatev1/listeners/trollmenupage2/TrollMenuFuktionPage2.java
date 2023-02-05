@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
@@ -27,6 +28,9 @@ public class TrollMenuFuktionPage2 implements Listener {
 
     public TrollMenuFuktionPage2(Main plugin){
         this.plugin = plugin;
+
+        startsJumingforJumpingPlayers();
+        rotatePlayers();
     }
 
     @EventHandler
@@ -172,6 +176,54 @@ public class TrollMenuFuktionPage2 implements Listener {
                                 plugin.getTrollMenuManager().setPage2Inventory(player, toTroll);
                             }
                             break;
+                        case "troll.ebeds":
+                            if (plugin.yaml.getBoolean("ActiveTrolls." + toTroll.getUniqueId() + ".EBeds")) {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".EBeds", false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 bed explode now in all dimensions.");
+                            } else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".EBeds", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 beds now only explode in the nether and end.");
+                            }
+                            if (closequestion) {
+                                player.closeInventory();
+                            } else {
+                                plugin.getTrollMenuManager().setPage2Inventory(player, toTroll);
+                            }
+                            break;
+                        case "troll.jumping":
+                            if (plugin.yaml.getBoolean("ActiveTrolls." + toTroll.getUniqueId() + ".Jumping")) {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".Jumping", false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 stand still again.");
+                            } else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".Jumping", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 is now jumping for a long long time.");
+                            }
+                            if (closequestion) {
+                                player.closeInventory();
+                            } else {
+                                plugin.getTrollMenuManager().setPage2Inventory(player, toTroll);
+                            }
+                            break;
+                        case "troll.rotate":
+                            if (plugin.yaml.getBoolean("ActiveTrolls." + toTroll.getUniqueId() + ".Rotate")) {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".Rotate", false);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 is not longer rotating.");
+                            } else {
+                                plugin.yaml.set("ActiveTrolls." + toTroll.getUniqueId() + ".Rotate", true);
+                                plugin.saveData();
+                                player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 is now rotating.");
+                            }
+                            if (closequestion) {
+                                player.closeInventory();
+                            } else {
+                                plugin.getTrollMenuManager().setPage2Inventory(player, toTroll);
+                            }
+                            break;
                     }
                 }
             }
@@ -179,6 +231,24 @@ public class TrollMenuFuktionPage2 implements Listener {
     }
 
 
+
+    private void rotatePlayers(){
+        new BukkitRunnable() {
+            int counter = -180;
+            @Override
+            public void run() {
+                for(Player player : Bukkit.getOnlinePlayers()){
+                    if(counter == 180){
+                        counter = -180;
+                    }
+                    if (plugin.yaml.getBoolean("ActiveTrolls." + player.getUniqueId() + ".Rotate")){
+                        player.getLocation().setYaw(counter);
+                        counter++;
+                    }
+                }
+            }
+        }.runTaskTimer(plugin,0,1);
+    }
 
 
     @EventHandler
@@ -188,6 +258,28 @@ public class TrollMenuFuktionPage2 implements Listener {
                 event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onEnterBed(PlayerBedEnterEvent event){
+        Player player = event.getPlayer();
+        if (plugin.yaml.getBoolean("ActiveTrolls." + player.getUniqueId() + ".EBeds")) {
+            player.getWorld().createExplosion(event.getBed().getLocation(),5,true,true);
+        }
+    }
+    private void startsJumingforJumpingPlayers(){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(Player player : Bukkit.getOnlinePlayers()){
+                    if (plugin.yaml.getBoolean("ActiveTrolls." + player.getUniqueId() + ".Jumping")) {
+                        if (player.isOnGround()) {
+                            player.setVelocity(new Vector(0.0, 0.45, 0.0));
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin,1,1);
     }
 
     @EventHandler

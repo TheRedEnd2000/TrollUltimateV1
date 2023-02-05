@@ -49,6 +49,10 @@ public class TrollMenuManager {
         inventory.setItem(21, new ItemBuilder(Material.CHEST).setDisplayname("§cInvsee").setLore("", "§7Invsee a player").setLocalizedName("troll.invsee").build());
         inventory.setItem(22, new ItemBuilder(Material.ANVIL).setDisplayname("§cAnvil Drop").setLore("", "§7Drops an anvil on the player").setLocalizedName("troll.anvildrop").build());
         inventory.setItem(23, new ItemBuilder(Material.FEATHER).setDisplayname("§cNo Gravity").setLore("", "§7All mobs within a 20 block radius","§7 no longer have gravity").setLocalizedName("troll.nogravity").build());
+        inventory.setItem(24, new ItemBuilder(Material.NOTE_BLOCK).setDisplayname("§cRick Roll").setLore("", "§7Rick Rolls the player","","§4§lRequires NoteBlockAPI").setLocalizedName("troll.rickroll").build());
+        inventory.setItem(25, new ItemBuilder(Material.CARVED_PUMPKIN).setDisplayname("§cScaryMOOD World").setLore("", "§7Sends the player in another world for 3 Minutes.","§4§lCan use NoteBlockAPI").setLocalizedName("troll.newworld").build());
+        inventory.setItem(26, new ItemBuilder(Material.REDSTONE).setDisplayname("§cHack").setLore("", "§7Hack the Player").setLocalizedName("troll.hacked").build());
+        inventory.setItem(27, new ItemBuilder(Material.TNT).setDisplayname("§cTNT WORLD").setLore("", "§7Spawns everywhere tnt.","§7§lShift for more information.").setLocalizedName("troll.tntworld").build());
 
         player.openInventory(inventory);
     }
@@ -89,6 +93,18 @@ public class TrollMenuManager {
             inventory.setItem(16, new ItemBuilder(Material.WHEAT_SEEDS).setDisplayname("§cNo Drop §8(§7toggle§8)").setLore("", "§7The player can't drops items",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.nodrop").build());
         }else
             inventory.setItem(16, new ItemBuilder(Material.WHEAT_SEEDS).setDisplayname("§cNo Drop §8(§7toggle§8)").setLore("", "§7The player can't drops items",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.nodrop").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+playertoTroll.getUniqueId()+".EBeds")){
+            inventory.setItem(17, new ItemBuilder(Material.RED_BED).setDisplayname("§cExplosive Bed §8(§7toggle§8)").setLore("", "§7The players beds explodes in all dimensions.",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.ebeds").build());
+        }else
+            inventory.setItem(17, new ItemBuilder(Material.RED_BED).setDisplayname("§cExplosive Bed §8(§7toggle§8)").setLore("", "§7The players beds explodes in all dimensions.",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.ebeds").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+playertoTroll.getUniqueId()+".Jumping")){
+            inventory.setItem(18, new ItemBuilder(Material.DIAMOND_BOOTS).setDisplayname("§cInfinity Jumping §8(§7toggle§8)").setLore("", "§7The players will jump for a long long time.",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.jumping").build());
+        }else
+            inventory.setItem(18, new ItemBuilder(Material.DIAMOND_BOOTS).setDisplayname("§cInfinity Jumping §8(§7toggle§8)").setLore("", "§7The players will jump for a long long time.",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.jumping").build());
+        if(plugin.yaml.getBoolean("ActiveTrolls."+playertoTroll.getUniqueId()+".Rotate")){
+            inventory.setItem(19, new ItemBuilder(Material.COMPASS).setDisplayname("§cRotate §8(§7toggle§8)").setLore("", "§7Rotate the Player",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll enabled")).replaceAll("&","§")).addEnchant(Enchantment.ARROW_DAMAGE,1).addItemFlags(ItemFlag.HIDE_ENCHANTS).setLocalizedName("troll.rotate").build());
+        }else
+            inventory.setItem(19, new ItemBuilder(Material.COMPASS).setDisplayname("§cRotate §8(§7toggle§8)").setLore("", "§7Rotate the Player",Objects.requireNonNull(plugin.getConfig().getString("Messages.Troll disabled")).replaceAll("&","§")).setLocalizedName("troll.rotate").build());
 
         player.openInventory(inventory);
     }
@@ -156,6 +172,7 @@ public class TrollMenuManager {
         inventory.setItem(14,new ItemBuilder(Material.BOW).setUnbreakable(true).setDisplayname("§bImmediate Bow").setLore("","§7This bow shoots instantly.","§7Needs no arrows.","","§4§lTROLL ITEM").setLocalizedName("troll.item.immediatebow").build());
         inventory.setItem(15,new ItemBuilder(Material.BOW).setUnbreakable(true).setDisplayname("§bTriple Bow").setLore("","§7This Bow shoots 3 arrows at the same time.","§7Needs no arrows.","","§4§lTROLL ITEM").setLocalizedName("troll.item.triplebow").build());
         inventory.setItem(16,new ItemBuilder(Material.STICK).setDisplayname("§bStats Wand").setLore("","§7RIGHT CLICK a player to see his stats.","","§4§lTROLL ITEM").setLocalizedName("troll.item.statswand").build());
+        inventory.setItem(17,new ItemBuilder(Material.FLINT).setDisplayname("§bParticle Bomb").setLore("","§7Creates an huge particle circle around you","§7It also set every entity in flames for 5s","","§4§lTROLL ITEM").setLocalizedName("troll.item.particlebomb").build());
 
         player.openInventory(inventory);
     }
@@ -177,7 +194,7 @@ public class TrollMenuManager {
         SkullMeta meta = (SkullMeta) is.getItemMeta();
         meta.setOwningPlayer(playertoTroll);
         meta.setDisplayName("§4"+playertoTroll.getDisplayName());
-        meta.setLore(Arrays.asList("","§7You are trolling "+playertoTroll.getDisplayName()));
+        meta.setLore(Arrays.asList("","§7You are trolling "+playertoTroll.getDisplayName(),"§6LEFT-CLICK §7Teleport you to "+playertoTroll.getDisplayName(),"§6RIGHT-CLICK §7Teleport "+playertoTroll.getDisplayName()+"§7 to you"));
         is.setItemMeta(meta);
         inventory.setItem(49,is);
         int[] redglass = new int[]{46,47,48,50,51,52};

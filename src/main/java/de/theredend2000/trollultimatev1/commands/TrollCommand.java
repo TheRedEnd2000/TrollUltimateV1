@@ -51,6 +51,7 @@ public class TrollCommand implements CommandExecutor, Listener {
                             return true;
                         }else
                             player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
+                        return true;
                     }
                     if(!player.hasPermission(permission)){
                         player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
