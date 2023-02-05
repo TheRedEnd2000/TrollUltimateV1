@@ -21,8 +21,7 @@ public class TrollCommand implements CommandExecutor, Listener {
 
     private Main plugin;
     private final ArrayList<Player> trypasswordplayers;
-// Irgendwas geändert
-//technisch geshen kann ich es eigentlich
+
     public TrollCommand(Main plugin){
         this.plugin = plugin;
         trypasswordplayers = new ArrayList<>();
