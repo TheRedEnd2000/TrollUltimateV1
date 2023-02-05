@@ -32,6 +32,7 @@ public class TestCommand implements CommandExecutor {
                         if ((new Location(oldl.getWorld(), (double)(oldl.getBlockX() - 50 + x), (double)(oldl.getBlockY() - 7 + y), (double)(oldl.getBlockZ() - 50 + z))).getBlock().getType() != Material.AIR) {
                             Location l = new Location(oldl.getWorld(), (double)(oldl.getBlockX() - 50 + x), (double)(oldl.getBlockY() - 7 + y), (double)(oldl.getBlockZ() - 50 + z));
                             player.sendBlockChange(l, Material.TNT, (byte)0);
+                            player.sendMessage("Failed");
                         }
                     }
                 }
