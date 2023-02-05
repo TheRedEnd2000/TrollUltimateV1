@@ -23,11 +23,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class ItemFunktions implements Listener {
 
@@ -336,6 +340,12 @@ public class ItemFunktions implements Listener {
             event.setCancelled(true);
             if(event.getCurrentItem() != null){
                 if(event.getCurrentItem().getType() == Material.BOW && event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Open Troll Inventory")){
+                    String permission = plugin.getConfig().getString("Permissions.Open Troll Menu");
+                    assert permission != null;
+                    if(!player.hasPermission(permission)){
+                        player.sendMessage(Objects.requireNonNull(plugin.getConfig().getString("Messages.No Permission Message")).replaceAll("&","§"));
+                        return;
+                    }
                     plugin.getTrollMenuManager().setTrollItemsInventory(player,toTroll);
                 }
                 if(event.getCurrentItem().getType() == Material.RED_CONCRETE && event.getCurrentItem().getItemMeta().getDisplayName().equals("§4Close")){
@@ -344,6 +354,69 @@ public class ItemFunktions implements Listener {
             }
         }
     }
+    @EventHandler
+    public void onParticleBOMB(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        if(player.getItemInHand().getItemMeta() == null){
+            return;
+        }
+        String name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+        if(name.equals("§bParticle Bomb")){
+            if(plugin.getConfig().getBoolean("Settings.Only operator can use troll items")){
+                if(!player.isOp()){
+                    player.sendMessage(Main.PREFIX+"§cOnly operators are allowed to use this Items.");
+                    return;
+                }
+            }
+            if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if(isani){
+                    player.sendMessage(Main.PREFIX+"§cPlease wait!");
+                    return;
+                }
+                isani = true;
+                Location loc = player.getEyeLocation();
+                new BukkitRunnable() {
+                    double t = Math.PI / 4;
+                    public void run() {
+                        t = t + 0.1 * Math.PI;
+                        for (double theta = 0; theta <= 2 * Math.PI; theta = theta + Math.PI / 32) {
+                            double x = t * cos(theta);
+                            double y = 0/*-2 * sin(t)*/;
+                            double z = t * sin(theta);
+                            loc.add(x, y, z);
+                            player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 0, 0, 0, 0, 10);
+                            for(Entity e : loc.getWorld().getNearbyEntities(loc,1,1,1)){
+                                if(!e.equals(player)){
+                                    e.setFireTicks(20*5);
+                                }
+                            }
+                            loc.subtract(x, y, z);
+
+                            theta = theta + Math.PI / 64;
+
+                            x = t * cos(theta);
+                            y = 0;
+                            z = t * sin(theta);
+                            loc.add(x, y, z);
+                            player.getWorld().spawnParticle(Particle.SPELL_WITCH, loc, 0, 0, 0, 0, 10);
+                            for(Entity e : loc.getWorld().getNearbyEntities(loc,1,1,1)){
+                                if(!e.equals(player)){
+                                    e.setFireTicks(20*5);
+                                }
+                            }
+                            loc.subtract(x, y, z);
+                        }
+                        if (t > 14) {
+                            isani = false;
+                            this.cancel();
+                        }
+                    }
+                }.runTaskTimer(plugin, 0, 1);
+            }
+        }
+    }
+    private boolean isani = false;
+
 
 
 }

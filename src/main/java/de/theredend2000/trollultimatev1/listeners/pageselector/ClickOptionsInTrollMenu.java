@@ -3,9 +3,11 @@ package de.theredend2000.trollultimatev1.listeners.pageselector;
 import de.theredend2000.trollultimatev1.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -50,6 +52,18 @@ public class ClickOptionsInTrollMenu implements Listener {
                         case "trollmenu.trollitems":
                             plugin.getTrollMenuManager().setTrollItemsInventory(player,toTroll);
                             break;
+                    }
+                }
+                if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)){
+                    if(event.getInventory().getItem(49).getType().equals(Material.PLAYER_HEAD)) {
+                        if(event.getAction() == InventoryAction.PICKUP_ALL){
+                            player.teleport(toTroll);
+                            player.sendMessage(Main.PREFIX+"§aTeleported to §6"+toTroll.getName());
+                        }
+                        if(event.getAction() == InventoryAction.PICKUP_HALF){
+                            toTroll.teleport(player.getLocation());
+                            player.sendMessage(Main.PREFIX+"§aTeleported §6"+toTroll.getName()+"§a to you.");
+                        }
                     }
                 }
             }

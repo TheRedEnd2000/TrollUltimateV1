@@ -1,6 +1,8 @@
 package de.theredend2000.trollultimatev1;
 
+import de.theredend2000.trollultimatev1.commands.TestCommand;
 import de.theredend2000.trollultimatev1.commands.TrollCommand;
+import de.theredend2000.trollultimatev1.listeners.TestListener;
 import de.theredend2000.trollultimatev1.listeners.extras.SavePlayerStats;
 import de.theredend2000.trollultimatev1.listeners.extras.UpdateListener;
 import de.theredend2000.trollultimatev1.listeners.mobspawns.MobSpawnFunktions;
@@ -17,6 +19,9 @@ import de.theredend2000.trollultimatev1.vanish.VanishListener;
 import de.theredend2000.trollultimatev1.vanish.VanishManager;
 import de.theredend2000.trollultimatev1.vanish.VanishSettings;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,6 +46,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        createWorld();
         saveDefaultConfig();
         this.yaml = YamlConfiguration.loadConfiguration(this.data);
         this.saveData();
@@ -79,10 +85,12 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new VanishListener(this),this);
         pluginManager.registerEvents(new VanishSettings(this),this);
         pluginManager.registerEvents(new TrollCommand(this),this);
+        pluginManager.registerEvents(new TestListener(this),this);
     }
 
     public void initCommands(){
         getCommand("trollultimate").setExecutor(new TrollCommand(this));
+        getCommand("music").setExecutor(new TestCommand());
     }
 
     public void initManagers(){
@@ -90,6 +98,16 @@ public final class Main extends JavaPlugin {
         trollMenuManager = new TrollMenuManager(this);
         checkConfig = new CheckConfig(this);
         vanishManager = new VanishManager(this);
+    }
+
+    public void createWorld(){
+        if(Bukkit.getWorld("ScaryMOOD") == null) {
+            WorldCreator worldCreator = new WorldCreator("ScaryMOOD");
+            worldCreator.generateStructures(true);
+            worldCreator.type(WorldType.NORMAL);
+            worldCreator.createWorld();
+            Bukkit.getConsoleSender().sendMessage(Main.PREFIX+"§aThe World §6ScaryMOOD§a was created.");
+        }
     }
 
 

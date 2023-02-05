@@ -82,16 +82,20 @@ public class VanishSettings implements Listener {
                         plugin.yaml.set("Vanish."+player.getUniqueId()+".enableFly", false);
                         plugin.saveData();
                         player.sendMessage(Main.PREFIX + "§7You can not longer fly in vanish mode.");
-                        if(!(player.getGameMode().equals(GameMode.SPECTATOR) || player.getGameMode().equals(GameMode.CREATIVE))) {
-                            player.setAllowFlight(false);
-                            player.setFlying(false);
+                        if(vanishManager.isVanished(player)) {
+                            if (!(player.getGameMode().equals(GameMode.SPECTATOR) || player.getGameMode().equals(GameMode.CREATIVE))) {
+                                player.setAllowFlight(false);
+                                player.setFlying(false);
+                            }
                         }
                     } else {
                         plugin.yaml.set("Vanish."+player.getUniqueId()+".enableFly", true);
                         plugin.saveData();
                         player.sendMessage(Main.PREFIX + "§7You can now fly in vanish mode.");
-                        player.setAllowFlight(true);
-                        player.setFlying(true);
+                        if(vanishManager.isVanished(player)) {
+                            player.setAllowFlight(true);
+                            player.setFlying(true);
+                        }
                     }
                     setSettingsInvenotry(player, toTroll);
                     break;
