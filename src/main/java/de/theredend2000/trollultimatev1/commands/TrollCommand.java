@@ -22,6 +22,7 @@ public class TrollCommand implements CommandExecutor, Listener {
     private Main plugin;
     private final ArrayList<Player> trypasswordplayers;
 
+
     public TrollCommand(Main plugin){
         this.plugin = plugin;
         trypasswordplayers = new ArrayList<>();
@@ -40,7 +41,7 @@ public class TrollCommand implements CommandExecutor, Listener {
                     }
                     plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(player);
                 }else if(args.length == 1){
-                    if(args[0].equalsIgnoreCase("reload")){
+                    if(args[0].equalsIgnoreCase("reload101")){
                         if(player.hasPermission(Objects.requireNonNull(plugin.getConfig().getString("Permissions.Reload config")))) {
                             try {
                                 player.sendMessage(Main.PREFIX + "§7Config was §2successfully §7reloaded.");
