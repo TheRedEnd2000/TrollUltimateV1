@@ -43,7 +43,7 @@ public class TrollCommand implements CommandExecutor, Listener {
                     if(args[0].equalsIgnoreCase("reload")){
                         if(player.hasPermission(Objects.requireNonNull(plugin.getConfig().getString("Permissions.Reload config")))) {
                             try {
-                                player.sendMessage(Main.PREFIX + "§7Config was §2successfully §7reloaded.");
+                                player.sendMessage(Main.PREFIX + "§7Config was §2successfully §7reloaded. LOL");
                                 plugin.reloadConfig();
                             } catch (Exception e) {
                                 player.sendMessage(Main.PREFIX + "§7There was an error. Please delete the config and start the server again.");
