@@ -1,0 +1,22 @@
+#Permissions
+Permissions:
+  Open Troll Menu: trollultimate.open
+  Reload config: trollultimate.reload
+
+
+#Messages
+Messages:
+  No Permission Message: "&cYou have no permission to use this command."
+  Can't troll yourself message: "&cYou can't troll yourself."
+  Can't troll players with op message: "&cYou can't troll players with op."
+  Troll enabled: "&2✔ &7Enabled"
+  Troll disabled: "&4❌ &7Disabled"
+
+#Settings
+Settings:
+  Troll other players with op: true
+  Troll yourself: true
+  Close inventory when troll entered: false
+  Send message when new plugin version is out: true
+#this should always be true because it can ruin your server!
+  Only operator can use troll items: true
