@@ -60,7 +60,7 @@ public class TrollCommand implements CommandExecutor, Listener {
 
                     Player totroll = Bukkit.getPlayer(args[0]);
                     if(totroll == null){
-                        player.sendMessage(Main.PREFIX+"§cI can't find this Player. LOL");
+                        player.sendMessage(Main.PREFIX+"§cI can't find this Player.");
                         return true;
                     }
                     if(totroll.equals(player)){
