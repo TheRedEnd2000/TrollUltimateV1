@@ -9,8 +9,11 @@
         <module name="TrollUltimateV1" />
       </profile>
     </annotationProcessing>
+<<<<<<< HEAD
     <bytecodeTargetLevel>
       <module name="TrollUltimateV1" target="1.8" />
     </bytecodeTargetLevel>
+=======
+>>>>>>> origin/master
   </component>
 </project>
