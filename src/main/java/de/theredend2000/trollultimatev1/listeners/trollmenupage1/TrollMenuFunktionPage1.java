@@ -1,16 +1,31 @@
 package de.theredend2000.trollultimatev1.listeners.trollmenupage1;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.datafixers.util.Pair;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import de.theredend2000.trollultimatev1.Main;
-import de.theredend2000.trollultimatev1.util.ItemBuilder;
-import net.md_5.bungee.api.ChatMessageType;
+import de.theredend2000.trollultimatev1.util.NPC;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.network.protocol.game.ClientboundAddPlayerPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -33,6 +48,8 @@ import org.bukkit.util.Vector;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.*;
 
 public class TrollMenuFunktionPage1 implements Listener {
@@ -46,6 +63,7 @@ public class TrollMenuFunktionPage1 implements Listener {
     private HashMap<Player, Location> hackedPlayerLocation;
     private HashMap<String, Location> playerLocation;
     private HashMap<String, Location> playerLocation2;
+    private HashMap<Player, ServerPlayer> npcs = new HashMap<>();
 
     public TrollMenuFunktionPage1(Main plugin) {
         this.plugin = plugin;
@@ -426,11 +444,43 @@ public class TrollMenuFunktionPage1 implements Listener {
                                 }
                             }
                         }
-                        player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 has now many tnt in his world.");
-                        if(event.isShiftClick()){
-                            event.getInventory().setItem(27, new ItemBuilder(Material.TNT).setDisplayname("§cTNT WORLD").setLore("", "§7Spawns everywhere tnt.","§7Remove tnt with these ways","§4- Right Click to Tnt","§4- Kill yourself","§4- Rejoin the server").setLocalizedName("troll.tntworld").build());
-                        }
+                        player.sendMessage(Main.PREFIX + "§6" + toTroll.getDisplayName() + "§7 has now much tnt in his world.");
                         break;
+                        case "troll.fakePlayer":
+                            CraftPlayer craftPlayer = (CraftPlayer) toTroll;
+                            ServerPlayer serverPlayer = craftPlayer.getHandle();
+                            MinecraftServer server = serverPlayer.getServer();
+                            ServerLevel level = serverPlayer.getLevel();
+                            ProfilePublicKey key = serverPlayer.getProfilePublicKey();
+                            GameProfile gameProfile = new GameProfile(UUID.randomUUID(),toTroll.getName());
+
+                            String[] name = NPC.getSkin(toTroll,toTroll.getName());
+                            gameProfile.getProperties().put("textures",new Property("textures",name[0],name[1]));
+                            ServerPlayer npc = new ServerPlayer(server,level,gameProfile,key);
+                            npc.setPos(player.getLocation().getX(),player.getLocation().getY(),player.getLocation().getZ());
+
+                            ServerGamePacketListenerImpl ps = serverPlayer.connection;
+                            ps.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER,npc));
+                            ps.send(new ClientboundAddPlayerPacket(npc));
+                            ps.send(new ClientboundSetEquipmentPacket(npc.getBukkitEntity().getEntityId(), List.of(new Pair<>(EquipmentSlot.MAINHAND, CraftItemStack.asNMSCopy(new ItemStack(Material.DIAMOND_AXE))))));
+                            npcs.put(toTroll,npc);
+                            new BukkitRunnable() {
+                                int progress = 0;
+                                @Override
+                                public void run() {
+                                    if (progress == 58) {
+                                        ServerPlayer npc = npcs.get(toTroll);
+                                        npc.teleportTo(toTroll.getLocation().getX(),toTroll.getLocation().getY(),toTroll.getLocation().getZ());
+                                    }
+                                    if (progress == 60) {
+                                        ServerPlayer npc = npcs.get(toTroll);
+                                        ServerGamePacketListenerImpl ps = serverPlayer.connection;
+                                        ps.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.REMOVE_PLAYER,npc));
+                                    }
+                                    progress ++;
+                                }
+                            }.runTaskTimer(plugin,0,20);
+                            break;
                     }
                 }
             }

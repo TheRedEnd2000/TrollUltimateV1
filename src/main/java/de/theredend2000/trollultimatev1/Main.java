@@ -90,7 +90,7 @@ public final class Main extends JavaPlugin {
 
     public void initCommands(){
         getCommand("trollultimate").setExecutor(new TrollCommand(this));
-        getCommand("music").setExecutor(new TestCommand());
+        getCommand("test").setExecutor(new TestCommand());
     }
 
     public void initManagers(){

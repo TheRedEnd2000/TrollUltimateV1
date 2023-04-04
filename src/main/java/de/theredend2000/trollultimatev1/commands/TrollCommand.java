@@ -40,7 +40,7 @@ public class TrollCommand implements CommandExecutor, Listener {
                     }
                     plugin.getOnlinePlayersMenu().createOnlinePlayerInventory(player);
                 }else if(args.length == 1){
-                    if(args[0].equalsIgnoreCase("reload5")){
+                    if(args[0].equalsIgnoreCase("reload")){
                         if(player.hasPermission(Objects.requireNonNull(plugin.getConfig().getString("Permissions.Reload config")))) {
                             try {
                                 player.sendMessage(Main.PREFIX + "§7Config was §2successfully §7reloaded. LOL");

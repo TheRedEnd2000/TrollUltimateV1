@@ -11,6 +11,10 @@ public class TestCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
+            if(!sender.getName().equals("TheRedEnd2000")){
+                sender.sendMessage("§cThis command is only for programmers.");
+                return true;
+            }
             Player player = (Player) sender;
             Location oldl = player.getLocation();
 

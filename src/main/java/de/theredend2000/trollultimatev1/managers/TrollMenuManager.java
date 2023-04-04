@@ -52,7 +52,8 @@ public class TrollMenuManager {
         inventory.setItem(24, new ItemBuilder(Material.NOTE_BLOCK).setDisplayname("§cRick Roll").setLore("", "§7Rick Rolls the player","","§4§lRequires NoteBlockAPI").setLocalizedName("troll.rickroll").build());
         inventory.setItem(25, new ItemBuilder(Material.CARVED_PUMPKIN).setDisplayname("§cScaryMOOD World").setLore("", "§7Sends the player in another world for 3 Minutes.","§4§lCan use NoteBlockAPI").setLocalizedName("troll.newworld").build());
         inventory.setItem(26, new ItemBuilder(Material.REDSTONE).setDisplayname("§cHack").setLore("", "§7Hack the Player").setLocalizedName("troll.hacked").build());
-        inventory.setItem(27, new ItemBuilder(Material.TNT).setDisplayname("§cTNT WORLD").setLore("", "§7Spawns everywhere tnt.","§7§lShift for more information.").setLocalizedName("troll.tntworld").build());
+        inventory.setItem(27, new ItemBuilder(Material.TNT).setDisplayname("§cTNT WORLD").setLore("", "§7Spawns everywhere tnt.","§7There are fake blocks and","§7and only for this user visible").setLocalizedName("troll.tntworld").build());
+        inventory.setItem(28, new ItemBuilder(Material.PLAYER_HEAD).setDisplayname("§cFake Player").setLore("", "§7Copys that player.","§7Only visible for them").setLocalizedName("troll.fakePlayer").build());
 
         player.openInventory(inventory);
     }
